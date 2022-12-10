@@ -10,30 +10,30 @@ import java.util.List;
  * ComplexCommand class to execute any command chain.
  */
 public class ComplexCommand implements ICompoundCommand {
-    private final List<DriverCommand> driverCommandList;
+	private final List<DriverCommand> driverCommandList;
 
-    public ComplexCommand(List<DriverCommand> driverCommandList) {
-        if (driverCommandList == null) {
-            this.driverCommandList = new LinkedList<>();
-        } else {
-            this.driverCommandList = driverCommandList;
-        }
-    }
+	public ComplexCommand(List<DriverCommand> driverCommandList) {
+		if (driverCommandList == null) {
+			this.driverCommandList = new LinkedList<>();
+		} else {
+			this.driverCommandList = driverCommandList;
+		}
+	}
 
-    /**
-     * @param command - command to add
-     */
-    public void addCommand(DriverCommand command) {
-        this.driverCommandList.add(command);
-    }
+	/**
+	 * @param command - command to add
+	 */
+	public void addCommand(DriverCommand command) {
+		this.driverCommandList.add(command);
+	}
 
-    @Override
-    public void execute(Job2dDriver driver) {
-        driverCommandList.forEach(driverCommand -> driverCommand.execute(driver));
-    }
+	@Override
+	public void execute(Job2dDriver driver) {
+		driverCommandList.forEach(driverCommand -> driverCommand.execute(driver));
+	}
 
-    @Override
-    public Iterator<DriverCommand> iterator() {
-        return driverCommandList.iterator();
-    }
+	@Override
+	public Iterator<DriverCommand> iterator() {
+		return driverCommandList.iterator();
+	}
 }
