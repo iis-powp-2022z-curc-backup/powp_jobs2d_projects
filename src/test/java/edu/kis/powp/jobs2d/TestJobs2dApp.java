@@ -120,8 +120,9 @@ public class TestJobs2dApp {
 				Application app = new Application("Jobs 2D");
 				DrawerFeature.setupDrawerPlugin(app);
 				CommandsFeature.setupCommandManager();
-
 				DriverFeature.setupDriverPlugin(app);
+				RecordingFeature.setupRecordingPlugin(app);
+
 				setupDrivers(app);
 				setupPresetTests(app);
 				setupCommandTests(app);
