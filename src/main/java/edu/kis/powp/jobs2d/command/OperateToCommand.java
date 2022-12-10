@@ -22,7 +22,10 @@ public class OperateToCommand implements DriverCommand {
 
 	@Override
 	public Object clone() {
-		return null;
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException exception) {
+			return new OperateToCommand(this.posX, this.posY);
+		}
 	}
-
 }

@@ -22,7 +22,10 @@ public class SetPositionCommand implements DriverCommand {
 
 	@Override
 	public Object clone() {
-		return null;
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException exception) {
+			return new SetPositionCommand(this.posX, this.posY);
+		}
 	}
-
 }
