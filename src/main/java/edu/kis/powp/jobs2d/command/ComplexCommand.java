@@ -11,13 +11,15 @@ import java.util.List;
  */
 public class ComplexCommand implements ICompoundCommand {
 	private final List<DriverCommand> driverCommandList;
+	private final String name;
 
-	public ComplexCommand(List<DriverCommand> driverCommandList) {
+	public ComplexCommand(List<DriverCommand> driverCommandList, String name) {
 		if (driverCommandList == null) {
 			this.driverCommandList = new LinkedList<>();
 		} else {
 			this.driverCommandList = driverCommandList;
 		}
+		this.name = name;
 	}
 
 	/**
@@ -35,5 +37,10 @@ public class ComplexCommand implements ICompoundCommand {
 	@Override
 	public Iterator<DriverCommand> iterator() {
 		return driverCommandList.iterator();
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }
