@@ -16,6 +16,12 @@ public class RecordingManager {
         status = RECORDING_STATUS.IN_PROGRESS;
     }
 
+    public void resumeRecording() {
+        replacedDriver = DriverFeature.getDriverManager().getCurrentDriver();
+        DriverFeature.getDriverManager().setCurrentDriver(recorderDriver);
+        status = RECORDING_STATUS.IN_PROGRESS;
+    }
+
     public void stopRecording() {
         DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
         status = RECORDING_STATUS.STOPPED;
