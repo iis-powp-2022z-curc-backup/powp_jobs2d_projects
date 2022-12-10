@@ -24,4 +24,9 @@ public class CommandsRecorderDriver implements Job2dDriver {
     public List<DriverCommand> getCommands() {
         return commands;
     }
+
+    @Override
+    public String toString() {
+        return "Commands Recorder Driver";
+    }
 }
