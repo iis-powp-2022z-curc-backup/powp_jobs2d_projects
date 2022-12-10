@@ -109,6 +109,8 @@ public class TestJobs2dApp {
 				(ActionEvent e) -> RecordingFeature.getRecordingManager().startRecording());
 		application.addComponentMenuElement(RecordingFeature.class, "Stop recording",
 				(ActionEvent e) -> RecordingFeature.getRecordingManager().stopRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Load recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().loadRecording());
 	}
 
 	/**

@@ -1,8 +1,13 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.enums.RECORDING_STATUS;
+import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+
+import java.util.List;
 
 public class RecordingManager {
 
@@ -25,6 +30,12 @@ public class RecordingManager {
     public void stopRecording() {
         DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
         status = RECORDING_STATUS.STOPPED;
+    }
+
+    public void loadRecording() {
+        List<DriverCommand> commands = recorderDriver.getCommands();
+        DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
+        manager.setCurrentCommand(commands, "Recorded commands");
     }
 
     public RECORDING_STATUS getStatus() {
