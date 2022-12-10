@@ -106,9 +106,9 @@ public class TestJobs2dApp {
 	private static void setupRecording(Application application) {
 		application.addComponentMenu(RecordingFeature.class, "Recording");
 		application.addComponentMenuElement(RecordingFeature.class, "Start recording",
-				(ActionEvent e) -> System.out.println("Start recording here"));
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().startRecording());
 		application.addComponentMenuElement(RecordingFeature.class, "Stop recording",
-				(ActionEvent e) -> System.out.println("Stop recording here"));
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().stopRecording());
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class TestJobs2dApp {
 				DrawerFeature.setupDrawerPlugin(app);
 				CommandsFeature.setupCommandManager();
 				DriverFeature.setupDriverPlugin(app);
-				RecordingFeature.setupRecordingPlugin(app);
+				RecordingFeature.setupRecordingPlugin();
 
 				setupDrivers(app);
 				setupPresetTests(app);

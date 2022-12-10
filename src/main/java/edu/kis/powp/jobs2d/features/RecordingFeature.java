@@ -1,17 +1,17 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.enums.RECORDING_STATUS;
+import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.drivers.DriverChangeObserver;
+import edu.kis.powp.jobs2d.drivers.RecordingManager;
 
 public class RecordingFeature {
 
-    private RECORDING_STATUS status = RECORDING_STATUS.STOPPED;
     private static RecordingManager recordingManager;
+
     /**
      * Setup Recording Plugin and add to application.
-     *
-     * @param application Application context.
      */
-    public static void setupRecordingPlugin(Application application) {
+    public static void setupRecordingPlugin() {
         recordingManager = new RecordingManager();
 
         DriverChangeObserver driverObserver = new DriverChangeObserver();
@@ -21,5 +21,4 @@ public class RecordingFeature {
     public static RecordingManager getRecordingManager() {
         return recordingManager;
     }
-
 }
