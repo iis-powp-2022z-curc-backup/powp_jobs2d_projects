@@ -16,20 +16,20 @@ public class RecordingManager {
     private final CommandsRecorderDriver recorderDriver = new CommandsRecorderDriver();
 
     public void startRecording() {
+        status = RECORDING_STATUS.IN_PROGRESS;
         replacedDriver = DriverFeature.getDriverManager().getCurrentDriver();
         DriverFeature.getDriverManager().setCurrentDriver(recorderDriver);
-        status = RECORDING_STATUS.IN_PROGRESS;
     }
 
     public void resumeRecording() {
+        status = RECORDING_STATUS.IN_PROGRESS;
         replacedDriver = DriverFeature.getDriverManager().getCurrentDriver();
         DriverFeature.getDriverManager().setCurrentDriver(recorderDriver);
-        status = RECORDING_STATUS.IN_PROGRESS;
     }
 
     public void stopRecording() {
-        DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
         status = RECORDING_STATUS.STOPPED;
+        DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
     }
 
     public void loadRecording() {
