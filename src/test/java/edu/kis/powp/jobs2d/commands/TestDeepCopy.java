@@ -3,7 +3,7 @@ package edu.kis.powp.jobs2d.commands;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -39,7 +39,7 @@ public class TestDeepCopy {
 
         final MockDriver driver1 = new MockDriver();
         final MockDriver driver2 = new MockDriver();
-        final String name = "UniqueName";
+        final String name = "ComplexCommand";
 
         final ComplexCommand command = new ComplexCommand(Stream.of(
                 new OperateToCommand(1,2),
@@ -48,8 +48,8 @@ public class TestDeepCopy {
                 new ComplexCommand(Stream.of(
                         new OperateToCommand(1,2),
                         new SetPositionCommand(3,4)
-                ).collect(toList()))
-        ).collect(toList()));
+                ).collect(toList()), name)
+        ).collect(toList()), name);
 
         final ICompoundCommand commandCopy = (ICompoundCommand) command.clone();
 
@@ -67,7 +67,7 @@ public class TestDeepCopy {
     }
 
     private static List<DriverCommand> getAllObjects(DriverCommand command) {
-        final List<DriverCommand> list = new ArrayList<>();
+        final List<DriverCommand> list = new LinkedList<>();
         list.add(command);
         if(command instanceof ICompoundCommand) {
             ((ICompoundCommand) command).iterator().forEachRemaining(x -> list.addAll(getAllObjects(x)));
@@ -76,7 +76,7 @@ public class TestDeepCopy {
     }
 
     private static class MockDriver implements Job2dDriver {
-        private final List<Integer> movements = new ArrayList<>();
+        private final List<Integer> movements = new LinkedList<>();
         @Override
         public void setPosition(int x, int y) {
             movements.add(x);
