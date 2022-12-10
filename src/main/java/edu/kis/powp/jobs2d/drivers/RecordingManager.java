@@ -41,4 +41,8 @@ public class RecordingManager {
     public RECORDING_STATUS getStatus() {
         return status;
     }
+
+    public void clearRecording() {
+        recorderDriver.clear();
+    }
 }

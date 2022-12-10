@@ -29,4 +29,8 @@ public class CommandsRecorderDriver implements Job2dDriver {
     public String toString() {
         return "Commands Recorder Driver";
     }
+
+    public void clear() {
+        commands.clear();
+    }
 }
