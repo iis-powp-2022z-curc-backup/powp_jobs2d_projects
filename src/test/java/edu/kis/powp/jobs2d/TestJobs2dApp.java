@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.RecordingController;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -104,10 +104,10 @@ public class TestJobs2dApp {
 	 * @param application Application context
 	 */
 	private static void setupRecording(Application application) {
-		application.addComponentMenu(RecordingController.class, "Recording");
-		application.addComponentMenuElement(RecordingController.class, "Start recording",
+		application.addComponentMenu(RecordingFeature.class, "Recording");
+		application.addComponentMenuElement(RecordingFeature.class, "Start recording",
 				(ActionEvent e) -> System.out.println("Start recording here"));
-		application.addComponentMenuElement(RecordingController.class, "Stop recording",
+		application.addComponentMenuElement(RecordingFeature.class, "Stop recording",
 				(ActionEvent e) -> System.out.println("Stop recording here"));
 	}
 
