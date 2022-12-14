@@ -13,6 +13,10 @@ public class DriverComposite implements Job2dDriver{
 		this.DriverLists.add(driver);
 	}
 
+	public void remove(Job2dDriver driver){
+		this.DriverLists.remove(driver);
+	}
+
 
 	@Override
 	public void setPosition(int x, int y) {
