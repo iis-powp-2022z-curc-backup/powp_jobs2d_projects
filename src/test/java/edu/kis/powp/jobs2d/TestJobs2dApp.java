@@ -67,16 +67,16 @@ public class TestJobs2dApp {
 
 		DriverFeature.addDriver("Special line Simulator", driver2);
 
-		DriverComposite driverCompositeLoggerSpecialLineCombo = new DriverComposite();
-		driverCompositeLoggerSpecialLineCombo.add(loggerDriver);
-		driverCompositeLoggerSpecialLineCombo.add(driver1);
+		DriverComposite compositeLoggerSpecialLineComboDriver = new DriverComposite();
+		compositeLoggerSpecialLineComboDriver.add(loggerDriver);
+		compositeLoggerSpecialLineComboDriver.add(driver1);
 
-		DriverComposite driverCompositeDoubleLineCombo = new DriverComposite();
-		driverCompositeDoubleLineCombo.add(driver1);
-		driverCompositeDoubleLineCombo.add(driver2);
+		DriverComposite compositeDoubleLineComboDriver = new DriverComposite();
+		compositeDoubleLineComboDriver.add(driver1);
+		compositeDoubleLineComboDriver.add(driver2);
 
-		DriverFeature.addDriver("Logger and line driver combo",driverCompositeLoggerSpecialLineCombo);
-		DriverFeature.addDriver("Double line driver combo",driverCompositeDoubleLineCombo);
+		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
+		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
 		DriverFeature.updateDriverInfo();
 	}
