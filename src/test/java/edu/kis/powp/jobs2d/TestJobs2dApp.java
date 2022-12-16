@@ -95,6 +95,10 @@ public class TestJobs2dApp {
 		application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
 	}
 
+	private static void setupMouseDrawer(Application app) {
+		DrawLineMouseListener.activate(app.getFreePanel(), DriverFeature.getDriverManager());
+	}
+
 	/**
 	 * Launch the application.
 	 */
@@ -113,8 +117,8 @@ public class TestJobs2dApp {
 				setupWindows(app);
 
 				app.setVisibility(true);
+				setupMouseDrawer(app);
 			}
 		});
 	}
-
 }
