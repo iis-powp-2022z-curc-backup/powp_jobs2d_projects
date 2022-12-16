@@ -62,23 +62,23 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger driver", loggerDriver);
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
-		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-		Job2dDriver driver2 = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-		DriverFeature.addDriver("Line Simulator", driver);
-		DriverFeature.getDriverManager().setCurrentDriver(driver);
+		Job2dDriver driverBasicLine = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+		Job2dDriver driverSpecialLine = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		DriverFeature.addDriver("Line Simulator", driverBasicLine);
+		DriverFeature.getDriverManager().setCurrentDriver(driverBasicLine);
 
-		DriverFeature.addDriver("Special line Simulator", driver2);
+		DriverFeature.addDriver("Special line Simulator", driverSpecialLine);
 
-		DriverComposite driverCompositeLoggerSpecialLineCombo = new DriverComposite();
-		driverCompositeLoggerSpecialLineCombo.add(loggerDriver);
-		driverCompositeLoggerSpecialLineCombo.add(driver);
+		DriverComposite compositeLoggerSpecialLineComboDriver = new DriverComposite();
+		compositeLoggerSpecialLineComboDriver.add(loggerDriver);
+		compositeLoggerSpecialLineComboDriver.add(driverBasicLine);
 
-		DriverComposite driverCompositeDoubleLineCombo = new DriverComposite();
-		driverCompositeDoubleLineCombo.add(driver);
-		driverCompositeDoubleLineCombo.add(driver2);
+		DriverComposite compositeDoubleLineComboDriver = new DriverComposite();
+		compositeDoubleLineComboDriver.add(driverBasicLine);
+		compositeDoubleLineComboDriver.add(driverSpecialLine);
 
-		DriverFeature.addDriver("Logger and line driver combo",driverCompositeLoggerSpecialLineCombo);
-		DriverFeature.addDriver("Double line driver combo",driverCompositeDoubleLineCombo);
+		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
+		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
 		DriverFeature.updateDriverInfo();
 	}
