@@ -17,6 +17,8 @@ public class RecordingManager {
     private final CommandsRecorderDriver recorderDriver = new CommandsRecorderDriver();
 
     public void startRecording() {
+        if (isAlreadyReplaced()) return;
+
         status = RECORDING_STATUS.IN_PROGRESS;
         Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
@@ -34,6 +36,8 @@ public class RecordingManager {
     }
 
     public void resumeRecording() {
+        if (isAlreadyReplaced()) return;
+
         status = RECORDING_STATUS.IN_PROGRESS;
         Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
