@@ -6,9 +6,12 @@ import java.util.logging.Logger;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CommandVisitor;
+import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.observer.Publisher;
+
+import java.util.List;
 
 /**
  * Driver command Manager.
@@ -17,8 +20,6 @@ public class DriverCommandManager {
 	private DriverCommand currentCommand = null;
 
 	private Publisher changePublisher = new Publisher();
-
-	private CommandVisitor commandVisitor = new CommandVisitor();
 
 	/**
 	 * Set current command.
@@ -37,34 +38,7 @@ public class DriverCommandManager {
 	 * @param name        name of the command.
 	 */
 	public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
-		setCurrentCommand(new ICompoundCommand() {
-			Logger logger = Logger.getLogger("global");
-
-			List<DriverCommand> driverCommands = commandList;
-
-			@Override
-			public void execute(Job2dDriver driver) {
-
-				driverCommands.forEach((c) -> {
-					c.execute(driver);
-					c.accept(commandVisitor);
-				});
-
-				this.logger.info("Wykonano łącznie " + commandVisitor.sumAll() + " operacji");
-
-			}
-
-			@Override
-			public Iterator<DriverCommand> iterator() {
-				return driverCommands.iterator();
-			}
-
-			@Override
-			public String toString() {
-				return name;
-			}
-		});
-
+		setCurrentCommand(new ComplexCommand(commandList, name));
 	}
 
 	/**
