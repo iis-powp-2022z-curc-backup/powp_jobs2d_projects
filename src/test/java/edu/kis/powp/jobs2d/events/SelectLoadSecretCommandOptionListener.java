@@ -12,7 +12,7 @@ public class SelectLoadSecretCommandOptionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ComplexCommand complexCommand = ComplexCommandFactory.createLoadSecret();
+		ComplexCommand complexCommand = ComplexCommandFactory.createTopSecret();
 
 		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
 		manager.setCurrentCommand(complexCommand);
