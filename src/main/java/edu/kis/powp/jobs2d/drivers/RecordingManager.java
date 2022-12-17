@@ -76,4 +76,19 @@ public class RecordingManager {
     public void clearRecording() {
         recorderDriver.clear();
     }
+
+    private boolean isAlreadyReplaced() {
+        Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
+
+        if (driver instanceof CommandsRecorderDriver) {
+            return true;
+        }
+
+        if (driver instanceof DriverComposite) {
+            boolean hasAlreadyRecorder = ((DriverComposite) driver).anyMatch(d -> d instanceof CommandsRecorderDriver);
+            return hasAlreadyRecorder;
+        }
+
+        return false;
+    }
 }
