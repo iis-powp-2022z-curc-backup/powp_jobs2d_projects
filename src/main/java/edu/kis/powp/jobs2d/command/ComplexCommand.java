@@ -22,11 +22,8 @@ public class ComplexCommand implements ICompoundCommand {
 		this.name = name;
 	}
 
-	/**
-	 * @param command - command to add
-	 */
-	public void addCommand(DriverCommand command) {
-		this.driverCommandList.add(command);
+	public static ComplexCommandBuilder builder() {
+		return new ComplexCommandBuilder();
 	}
 
 	@Override
@@ -44,12 +41,31 @@ public class ComplexCommand implements ICompoundCommand {
 		return name;
 	}
 
-    @Override
-    public Object clone() {
-        List<DriverCommand> commandsListToClone = new LinkedList<>();
-        for (DriverCommand driverCommand: driverCommandList) {
-            commandsListToClone.add( (DriverCommand) driverCommand.clone());
-        }
-        return new ComplexCommand(commandsListToClone, this.name);
-    }
+	@Override
+	public Object clone() {
+		List<DriverCommand> commandsListToClone = new LinkedList<>();
+		for (DriverCommand driverCommand : driverCommandList) {
+			commandsListToClone.add((DriverCommand) driverCommand.clone());
+		}
+		return new ComplexCommand(commandsListToClone, this.name);
+	}
+
+	public static class ComplexCommandBuilder {
+		private final List<DriverCommand> commands = new LinkedList<>();
+		private String name;
+
+		public ComplexCommandBuilder addCommand(final DriverCommand command) {
+			this.commands.add(command);
+			return this;
+		}
+
+		public ComplexCommandBuilder setName(final String name) {
+			this.name = name;
+			return this;
+		}
+
+		public ComplexCommand build() {
+			return new ComplexCommand(commands, name);
+		}
+	}
 }
