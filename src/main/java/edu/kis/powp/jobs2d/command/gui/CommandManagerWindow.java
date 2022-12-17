@@ -20,12 +20,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private DriverCommandManager commandManager;
 
 	private JTextArea currentCommandField;
-	private JPanel currentCommandPreview;//dodane pole
+	private JPanel currentCommandPreview;
 
 	private String observerListString;
 	private JTextArea observerListField;
 
-	private Job2dDriver previewAdapter;//deklaracja daptera
+	private Job2dDriver previewAdapter;
 
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	public CommandManagerWindow(DriverCommandManager commandManager) {
 		this.setTitle("Command Manager");
-		this.setSize(400, 800);
+		this.setSize(800, 800);
 		Container content = this.getContentPane();
 		content.setLayout(new GridBagLayout());
 
@@ -60,12 +60,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
 
-		currentCommandPreview = new JPanel();//dodany panel do preview
+		currentCommandPreview = new JPanel();//added panel to preview
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
-		c.weighty = 1;
-		content.add(currentCommandPreview, c);//dodanie do glownego ekranu
+		c.weighty = 3;
+		content.add(currentCommandPreview, c);//Added for main screen
 
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -83,9 +83,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 1;
 		content.add(btnClearObservers, c);
 
-		DrawPanelController drawPanelController = new DrawPanelController();//kontroler ktory kontroluje rysowaniem
+		DrawPanelController drawPanelController = new DrawPanelController();//Controller for drawning
 		drawPanelController.initialize(currentCommandPreview);
-		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");//tworzymy adapter ktory rysuje liniami ciaglami
+		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");//Create adapter for drawning
 	}
 
 	private void clearCommand() {
@@ -98,7 +98,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		currentCommandField.setText(commandManager.getCurrentCommandString());
 	}
 
-	public void updateCurrentCommandPreview() {//funkcja uruchamiana kiedy klikniemy na load secret command lub clear command, rysuje preview
+	public void updateCurrentCommandPreview() {
 		clearCurrentCommandPreview();
 		DriverCommand command = commandManager.getCurrentCommand();
 		if (command != null) {
