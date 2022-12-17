@@ -43,4 +43,13 @@ public class ComplexCommand implements ICompoundCommand {
 	public String toString() {
 		return name;
 	}
+
+    @Override
+    public Object clone() {
+        List<DriverCommand> commandsListToClone = new LinkedList<>();
+        for (DriverCommand driverCommand: driverCommandList) {
+            commandsListToClone.add( (DriverCommand) driverCommand.clone());
+        }
+        return new ComplexCommand(commandsListToClone, this.name);
+    }
 }
