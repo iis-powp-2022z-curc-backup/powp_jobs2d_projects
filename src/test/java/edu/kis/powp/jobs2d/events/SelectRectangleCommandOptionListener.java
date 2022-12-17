@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.events;
 
+import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
@@ -15,15 +16,16 @@ public class SelectRectangleCommandOptionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		List<DriverCommand> commandList = new ArrayList<>();
-		commandList.add(new SetPositionCommand(-100, -100));
-		commandList.add(new OperateToCommand(-100, -100));
-		commandList.add(new OperateToCommand(-100, 100));
-		commandList.add(new OperateToCommand(200, 100));
-		commandList.add(new OperateToCommand(200, -100));
-		commandList.add(new OperateToCommand(-100, -100));
+		ComplexCommand complexCommand = ComplexCommand.builder().addCommand(new SetPositionCommand(-100, -100))
+				.addCommand(new OperateToCommand(-100, -100))
+				.addCommand(new OperateToCommand(-100, 100))
+				.addCommand(new OperateToCommand(200, 100))
+				.addCommand(new OperateToCommand(200, -100))
+				.addCommand(new OperateToCommand(-100, -100))
+				.setName("RectangleCommand")
+				.build();
 
 		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
-		manager.setCurrentCommand(commandList, "RectangleCommand");
+		manager.setCurrentCommand(complexCommand);
 	}
 }
