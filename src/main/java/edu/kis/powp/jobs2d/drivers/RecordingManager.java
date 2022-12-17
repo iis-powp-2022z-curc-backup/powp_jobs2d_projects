@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.drivers;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
+import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
 import edu.kis.powp.jobs2d.enums.RECORDING_STATUS;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
@@ -17,21 +18,48 @@ public class RecordingManager {
 
     public void startRecording() {
         status = RECORDING_STATUS.IN_PROGRESS;
-        replacedDriver = DriverFeature.getDriverManager().getCurrentDriver();
-        DriverFeature.getDriverManager().setCurrentDriver(recorderDriver);
+        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+
+        if (currentDriver instanceof DriverComposite) {
+            ((DriverComposite) currentDriver).add(recorderDriver);
+        } else {
+            replacedDriver = currentDriver;
+            DriverComposite driverComposite = new DriverComposite();
+            driverComposite.add(currentDriver);
+            driverComposite.add(recorderDriver);
+            DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
+        }
+
         DriverFeature.updateDriverInfo();
     }
 
     public void resumeRecording() {
         status = RECORDING_STATUS.IN_PROGRESS;
-        replacedDriver = DriverFeature.getDriverManager().getCurrentDriver();
-        DriverFeature.getDriverManager().setCurrentDriver(recorderDriver);
+        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+
+        if (currentDriver instanceof DriverComposite) {
+            ((DriverComposite) currentDriver).add(recorderDriver);
+        } else {
+            replacedDriver = currentDriver;
+            DriverComposite driverComposite = new DriverComposite();
+            driverComposite.add(currentDriver);
+            driverComposite.add(recorderDriver);
+            DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
+        }
+
         DriverFeature.updateDriverInfo();
     }
 
     public void stopRecording() {
         status = RECORDING_STATUS.STOPPED;
-        DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
+        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+
+        if (currentDriver instanceof DriverComposite) {
+            ((DriverComposite) currentDriver).remove(recorderDriver);
+        } else {
+            DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
+        }
+
         DriverFeature.updateDriverInfo();
     }
 
