@@ -4,6 +4,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class DriverComposite implements Job2dDriver{
 	private List<Job2dDriver> DriverLists = new ArrayList<Job2dDriver>();
@@ -17,6 +18,7 @@ public class DriverComposite implements Job2dDriver{
 		this.DriverLists.remove(driver);
 	}
 
+	public boolean anyMatch(Predicate<Job2dDriver> predicate) { return this.DriverLists.stream().anyMatch(predicate); }
 
 	@Override
 	public void setPosition(int x, int y) {
