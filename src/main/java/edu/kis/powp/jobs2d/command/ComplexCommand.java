@@ -10,69 +10,69 @@ import java.util.List;
  * ComplexCommand class to execute any command chain.
  */
 public class ComplexCommand implements ICompoundCommand {
-    private final List<DriverCommand> driverCommandList;
-    private final String name;
+	private final List<DriverCommand> driverCommandList;
+	private final String name;
 
-    public ComplexCommand(List<DriverCommand> driverCommandList, String name) {
-        if (driverCommandList == null) {
-            this.driverCommandList = new LinkedList<>();
-        } else {
-            this.driverCommandList = driverCommandList;
-        }
-        this.name = name;
-    }
+	public ComplexCommand(List<DriverCommand> driverCommandList, String name) {
+		if (driverCommandList == null) {
+			this.driverCommandList = new LinkedList<>();
+		} else {
+			this.driverCommandList = driverCommandList;
+		}
+		this.name = name;
+	}
 
-    /**
-     * @param command - command to add
-     */
-    public void addCommand(DriverCommand command) {
-        this.driverCommandList.add(command);
-    }
+	/**
+	 * @param command - command to add
+	 */
+	public void addCommand(DriverCommand command) {
+		this.driverCommandList.add(command);
+	}
 
-    public static ComplexCommandBuilder builder() {
-        return new ComplexCommandBuilder();
-    }
+	public static ComplexCommandBuilder builder() {
+		return new ComplexCommandBuilder();
+	}
 
-    @Override
-    public void execute(Job2dDriver driver) {
-        driverCommandList.forEach(driverCommand -> driverCommand.execute(driver));
-    }
+	@Override
+	public void execute(Job2dDriver driver) {
+		driverCommandList.forEach(driverCommand -> driverCommand.execute(driver));
+	}
 
-    @Override
-    public Iterator<DriverCommand> iterator() {
-        return driverCommandList.iterator();
-    }
+	@Override
+	public Iterator<DriverCommand> iterator() {
+		return driverCommandList.iterator();
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return name;
+	}
 
-    @Override
-    public Object clone() {
-        List<DriverCommand> commandsListToClone = new LinkedList<>();
-        for (DriverCommand driverCommand : driverCommandList) {
-            commandsListToClone.add((DriverCommand) driverCommand.clone());
-        }
-        return new ComplexCommand(commandsListToClone, this.name);
-    }
+	@Override
+	public Object clone() {
+		List<DriverCommand> commandsListToClone = new LinkedList<>();
+		for (DriverCommand driverCommand : driverCommandList) {
+			commandsListToClone.add((DriverCommand) driverCommand.clone());
+		}
+		return new ComplexCommand(commandsListToClone, this.name);
+	}
 
-    public static class ComplexCommandBuilder {
-        private final List<DriverCommand> commands = new LinkedList<>();
-        private String name;
+	public static class ComplexCommandBuilder {
+		private final List<DriverCommand> commands = new LinkedList<>();
+		private String name;
 
-        public ComplexCommandBuilder addCommand(final DriverCommand command) {
-            this.commands.add(command);
-            return this;
-        }
+		public ComplexCommandBuilder addCommand(final DriverCommand command) {
+			this.commands.add(command);
+			return this;
+		}
 
-        public ComplexCommandBuilder setName(final String name) {
-            this.name = name;
-            return this;
-        }
+		public ComplexCommandBuilder setName(final String name) {
+			this.name = name;
+			return this;
+		}
 
-        public ComplexCommand build() {
-            return new ComplexCommand(commands, name);
-        }
-    }
+		public ComplexCommand build() {
+			return new ComplexCommand(commands, name);
+		}
+	}
 }
