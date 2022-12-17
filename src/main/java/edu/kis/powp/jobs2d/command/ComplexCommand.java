@@ -22,13 +22,6 @@ public class ComplexCommand implements ICompoundCommand {
 		this.name = name;
 	}
 
-	/**
-	 * @param command - command to add
-	 */
-	public void addCommand(DriverCommand command) {
-		this.driverCommandList.add(command);
-	}
-
 	public static ComplexCommandBuilder builder() {
 		return new ComplexCommandBuilder();
 	}
