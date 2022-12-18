@@ -11,10 +11,12 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.command.manager.DriverManagerObserver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -53,6 +55,9 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
+		DriverManagerObserver driverObserver = new DriverManagerObserver();
+		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
+
 		Job2dDriver loggerDriver = new LoggerDriver();
 		DriverFeature.addDriver("Logger driver", loggerDriver);
 
@@ -63,7 +68,6 @@ public class TestJobs2dApp {
 
 		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Special line Simulator", driver);
-		DriverFeature.updateDriverInfo();
 	}
 
 	private static void setupWindows(Application application) {
@@ -103,22 +107,20 @@ public class TestJobs2dApp {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Application app = new Application("Jobs 2D");
-				DrawerFeature.setupDrawerPlugin(app);
-				CommandsFeature.setupCommandManager();
+		EventQueue.invokeLater(() -> {
+			Application app = new Application("Jobs 2D");
+			DrawerFeature.setupDrawerPlugin(app);
+			CommandsFeature.setupCommandManager();
 
-				DriverFeature.setupDriverPlugin(app);
-				setupDrivers(app);
-				setupPresetTests(app);
-				setupCommandTests(app);
-				setupLogger(app);
-				setupWindows(app);
+			DriverFeature.setupDriverPlugin(app);
+			setupDrivers(app);
+			setupPresetTests(app);
+			setupCommandTests(app);
+			setupLogger(app);
+			setupWindows(app);
 
-				app.setVisibility(true);
-				setupMouseDrawer(app);
-			}
+			app.setVisibility(true);
+			setupMouseDrawer(app);
 		});
 	}
 }
