@@ -11,7 +11,7 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.command.manager.DriverManagerObserver;
+import edu.kis.powp.jobs2d.command.manager.DriverUpdateInfoObserver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
@@ -55,7 +55,7 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
-		DriverManagerObserver driverObserver = new DriverManagerObserver();
+		DriverUpdateInfoObserver driverObserver = new DriverUpdateInfoObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
 		Job2dDriver loggerDriver = new LoggerDriver();
