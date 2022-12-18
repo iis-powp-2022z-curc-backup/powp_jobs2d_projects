@@ -10,8 +10,8 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.command.manager.DriverUpdateInfoObserver;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
@@ -55,7 +55,7 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
-		DriverUpdateInfoObserver driverObserver = new DriverUpdateInfoObserver();
+		DriverInfoUpdateObserver driverObserver = new DriverInfoUpdateObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
 		Job2dDriver loggerDriver = new LoggerDriver();
@@ -107,20 +107,22 @@ public class TestJobs2dApp {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			Application app = new Application("Jobs 2D");
-			DrawerFeature.setupDrawerPlugin(app);
-			CommandsFeature.setupCommandManager();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				Application app = new Application("Jobs 2D");
+				DrawerFeature.setupDrawerPlugin(app);
+				CommandsFeature.setupCommandManager();
 
-			DriverFeature.setupDriverPlugin(app);
-			setupDrivers(app);
-			setupPresetTests(app);
-			setupCommandTests(app);
-			setupLogger(app);
-			setupWindows(app);
+				DriverFeature.setupDriverPlugin(app);
+				setupDrivers(app);
+				setupPresetTests(app);
+				setupCommandTests(app);
+				setupLogger(app);
+				setupWindows(app);
 
-			app.setVisibility(true);
-			setupMouseDrawer(app);
+				app.setVisibility(true);
+				setupMouseDrawer(app);
+			}
 		});
 	}
 }
