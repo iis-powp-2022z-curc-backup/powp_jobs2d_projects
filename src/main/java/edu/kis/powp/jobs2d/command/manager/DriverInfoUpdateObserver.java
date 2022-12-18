@@ -5,11 +5,11 @@ import edu.kis.powp.observer.Subscriber;
 
 public class DriverInfoUpdateObserver implements Subscriber {
 
-    public DriverInfoUpdateObserver(){
+	public DriverInfoUpdateObserver(){
 
-    }
-    @Override
-    public void update() {
-        DriverFeature.updateDriverInfo();
-    }
+	}
+	@Override
+	public void update() {
+		DriverFeature.updateDriverInfo();
+	}
 }
