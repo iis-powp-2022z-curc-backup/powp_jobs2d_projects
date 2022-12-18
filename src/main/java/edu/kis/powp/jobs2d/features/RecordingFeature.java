@@ -6,19 +6,19 @@ import edu.kis.powp.jobs2d.drivers.RecordingManager;
 
 public class RecordingFeature {
 
-    private static RecordingManager recordingManager;
+	private static RecordingManager recordingManager;
 
-    /**
-     * Setup Recording Plugin and add to application.
-     */
-    public static void setupRecordingPlugin() {
-        recordingManager = new RecordingManager();
+	/**
+	 * Setup Recording Plugin and add to application.
+	 */
+	public static void setupRecordingPlugin() {
+		recordingManager = new RecordingManager();
 
-        DriverChangeObserver driverObserver = new DriverChangeObserver();
-        DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
-    }
+		DriverChangeObserver driverObserver = new DriverChangeObserver();
+		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
+	}
 
-    public static RecordingManager getRecordingManager() {
-        return recordingManager;
-    }
+	public static RecordingManager getRecordingManager() {
+		return recordingManager;
+	}
 }

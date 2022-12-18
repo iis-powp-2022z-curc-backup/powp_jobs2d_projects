@@ -12,87 +12,87 @@ import java.util.List;
 
 public class RecordingManager {
 
-    private RECORDING_STATUS status = RECORDING_STATUS.STOPPED;
-    private Job2dDriver replacedDriver = null;
-    private final CommandsRecorderDriver recorderDriver = new CommandsRecorderDriver();
+	private RECORDING_STATUS status = RECORDING_STATUS.STOPPED;
+	private Job2dDriver replacedDriver = null;
+	private final CommandsRecorderDriver recorderDriver = new CommandsRecorderDriver();
 
-    public void startRecording() {
-        if (isAlreadyReplaced()) return;
+	public void startRecording() {
+		if (isAlreadyReplaced()) return;
 
-        status = RECORDING_STATUS.IN_PROGRESS;
-        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+		status = RECORDING_STATUS.IN_PROGRESS;
+		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
-        if (currentDriver instanceof DriverComposite) {
-            ((DriverComposite) currentDriver).add(recorderDriver);
-        } else {
-            replacedDriver = currentDriver;
-            DriverComposite driverComposite = new DriverComposite();
-            driverComposite.add(currentDriver);
-            driverComposite.add(recorderDriver);
-            DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
-        }
+		if (currentDriver instanceof DriverComposite) {
+			((DriverComposite) currentDriver).add(recorderDriver);
+		} else {
+			replacedDriver = currentDriver;
+			DriverComposite driverComposite = new DriverComposite();
+			driverComposite.add(currentDriver);
+			driverComposite.add(recorderDriver);
+			DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
+		}
 
-        DriverFeature.updateDriverInfo();
-    }
+		DriverFeature.updateDriverInfo();
+	}
 
-    public void resumeRecording() {
-        if (isAlreadyReplaced()) return;
+	public void resumeRecording() {
+		if (isAlreadyReplaced()) return;
 
-        status = RECORDING_STATUS.IN_PROGRESS;
-        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+		status = RECORDING_STATUS.IN_PROGRESS;
+		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
-        if (currentDriver instanceof DriverComposite) {
-            ((DriverComposite) currentDriver).add(recorderDriver);
-        } else {
-            replacedDriver = currentDriver;
-            DriverComposite driverComposite = new DriverComposite();
-            driverComposite.add(currentDriver);
-            driverComposite.add(recorderDriver);
-            DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
-        }
+		if (currentDriver instanceof DriverComposite) {
+			((DriverComposite) currentDriver).add(recorderDriver);
+		} else {
+			replacedDriver = currentDriver;
+			DriverComposite driverComposite = new DriverComposite();
+			driverComposite.add(currentDriver);
+			driverComposite.add(recorderDriver);
+			DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
+		}
 
-        DriverFeature.updateDriverInfo();
-    }
+		DriverFeature.updateDriverInfo();
+	}
 
-    public void stopRecording() {
-        status = RECORDING_STATUS.STOPPED;
-        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+	public void stopRecording() {
+		status = RECORDING_STATUS.STOPPED;
+		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
-        if (currentDriver instanceof DriverComposite) {
-            ((DriverComposite) currentDriver).remove(recorderDriver);
-        } else {
-            DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
-        }
+		if (currentDriver instanceof DriverComposite) {
+			((DriverComposite) currentDriver).remove(recorderDriver);
+		} else {
+			DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
+		}
 
-        DriverFeature.updateDriverInfo();
-    }
+		DriverFeature.updateDriverInfo();
+	}
 
-    public void loadRecording() {
-        List<DriverCommand> commands = recorderDriver.getCommands();
-        DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
-        manager.setCurrentCommand(commands, "Recorded commands");
-    }
+	public void loadRecording() {
+		List<DriverCommand> commands = recorderDriver.getCommands();
+		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
+		manager.setCurrentCommand(commands, "Recorded commands");
+	}
 
-    public RECORDING_STATUS getStatus() {
-        return status;
-    }
+	public RECORDING_STATUS getStatus() {
+		return status;
+	}
 
-    public void clearRecording() {
-        recorderDriver.clear();
-    }
+	public void clearRecording() {
+		recorderDriver.clear();
+	}
 
-    private boolean isAlreadyReplaced() {
-        Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
+	private boolean isAlreadyReplaced() {
+		Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
 
-        if (driver instanceof CommandsRecorderDriver) {
-            return true;
-        }
+		if (driver instanceof CommandsRecorderDriver) {
+			return true;
+		}
 
-        if (driver instanceof DriverComposite) {
-            boolean hasAlreadyRecorder = ((DriverComposite) driver).anyMatch(d -> d instanceof CommandsRecorderDriver);
-            return hasAlreadyRecorder;
-        }
+		if (driver instanceof DriverComposite) {
+			boolean hasAlreadyRecorder = ((DriverComposite) driver).anyMatch(d -> d instanceof CommandsRecorderDriver);
+			return hasAlreadyRecorder;
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

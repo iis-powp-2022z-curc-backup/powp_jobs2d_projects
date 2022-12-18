@@ -6,16 +6,16 @@ import edu.kis.powp.observer.Subscriber;
 
 public class DriverChangeObserver implements Subscriber {
 
-    @Override
-    public void update() {
-        RecordingManager recordingManager = RecordingFeature.getRecordingManager();
+	@Override
+	public void update() {
+		RecordingManager recordingManager = RecordingFeature.getRecordingManager();
 
-        if (recordingManager.getStatus() == RECORDING_STATUS.IN_PROGRESS) {
-            recordingManager.resumeRecording();
-        }
-    }
+		if (recordingManager.getStatus() == RECORDING_STATUS.IN_PROGRESS) {
+			recordingManager.resumeRecording();
+		}
+	}
 
-    public String toString() {
-        return "Driver Change Observer";
-    }
+	public String toString() {
+		return "Driver Change Observer";
+	}
 }
