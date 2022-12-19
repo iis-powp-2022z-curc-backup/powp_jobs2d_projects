@@ -13,6 +13,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandsCounterVisitor;
+import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
@@ -25,6 +26,7 @@ import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
 import edu.kis.powp.observer.Subscriber;
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -70,6 +72,9 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
+		DriverInfoUpdateObserver driverObserver = new DriverInfoUpdateObserver();
+		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
+
 		Job2dDriver loggerDriver = new LoggerDriver();
 		DriverFeature.addDriver("Logger driver", loggerDriver);
 
@@ -92,7 +97,9 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		DriverFeature.updateDriverInfo();
+		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		DriverFeature.addDriver("Special line Simulator", driver);
+
 	}
 
 	private static void setupWindows(Application application) {
