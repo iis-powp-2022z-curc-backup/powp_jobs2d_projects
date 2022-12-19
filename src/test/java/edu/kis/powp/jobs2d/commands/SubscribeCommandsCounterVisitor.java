@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class SubscribeCommandsCounterVisitor implements Subscriber {
 	DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
-	Logger logger = Logger.getLogger("global");
+	private Logger logger = Logger.getLogger("global");
 	private CommandsCounterVisitor commandsCounterVisitor;
 		public SubscribeCommandsCounterVisitor(CommandsCounterVisitor commandsCounterVisitor) {
 			this.commandsCounterVisitor = commandsCounterVisitor;
