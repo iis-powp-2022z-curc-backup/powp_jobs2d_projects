@@ -57,7 +57,7 @@ public class TestJobs2dApp {
 		Publisher publisher = manager.getChangePublisher();
 
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
-		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor));
+		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
 		
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());

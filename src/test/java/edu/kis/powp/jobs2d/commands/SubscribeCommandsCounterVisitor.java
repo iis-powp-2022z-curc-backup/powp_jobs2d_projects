@@ -8,20 +8,19 @@ import edu.kis.powp.observer.Subscriber;
 import java.util.logging.Logger;
 
 public class SubscribeCommandsCounterVisitor implements Subscriber {
-	DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
+	private DriverCommandManager manager;
 	private Logger logger = Logger.getLogger("global");
 	private CommandsCounterVisitor commandsCounterVisitor;
-		public SubscribeCommandsCounterVisitor(CommandsCounterVisitor commandsCounterVisitor) {
-			this.commandsCounterVisitor = commandsCounterVisitor;
-		}
+	public SubscribeCommandsCounterVisitor(CommandsCounterVisitor commandsCounterVisitor, DriverCommandManager driverManager) {
+		this.commandsCounterVisitor = commandsCounterVisitor;
+		this.manager = driverManager;
+	}
 
-		@Override
-		public void update() {
+	@Override
+	public void update() {
 		manager.getCurrentCommand().accept(commandsCounterVisitor);
 
 		this.logger.info("OperateToCommand wywołano " + commandsCounterVisitor.getOperateToCommandCount()  + " razy");
 		this.logger.info("SetPositionCommand wywołano " + commandsCounterVisitor.getSetPositionCommandCount()  + " razy");
 	}
-
-
 }
