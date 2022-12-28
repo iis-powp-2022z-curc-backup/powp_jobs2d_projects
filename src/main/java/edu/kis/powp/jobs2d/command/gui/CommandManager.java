@@ -6,7 +6,7 @@ import edu.kis.powp.observer.Publisher;
 public interface CommandManager {
     void runCommand();
     void clearCurrentCommand();
-    String getCurrentCommandAsText();
     void setCurrentCommand(DriverCommand driverCommand);
+    String getCurrentCommandString();
     Publisher getChangePublisher();
 }
