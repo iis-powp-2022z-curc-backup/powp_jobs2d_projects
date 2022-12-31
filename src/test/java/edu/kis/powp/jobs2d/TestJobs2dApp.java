@@ -9,6 +9,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
@@ -136,6 +137,23 @@ public class TestJobs2dApp {
 	}
 
 	/**
+	 * Setup menu option for start/stop commands recording
+	 *
+	 * @param application Application context
+	 */
+	private static void setupRecording(Application application) {
+		application.addComponentMenu(RecordingFeature.class, "Recording");
+		application.addComponentMenuElement(RecordingFeature.class, "Start recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().startRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Stop recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().stopRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Load recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().loadRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Clear recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().clearRecording());
+	}
+
+	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -144,12 +162,14 @@ public class TestJobs2dApp {
 				Application app = new Application("Jobs 2D");
 				DrawerFeature.setupDrawerPlugin(app);
 				CommandsFeature.setupCommandManager();
-
 				DriverFeature.setupDriverPlugin(app);
+				RecordingFeature.setupRecordingPlugin();
+
 				setupDrivers(app);
 				setupPresetTests(app);
 				setupCommandTests(app);
 				setupLogger(app);
+				setupRecording(app);
 				setupWindows(app);
 
 				app.setVisibility(true);

@@ -4,3 +4,14 @@
 /.project
 .settings
 .idea
+##############################
+## IntelliJ
+##############################
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
