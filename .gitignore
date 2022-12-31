@@ -3,6 +3,7 @@
 /.classpath
 /.project
 .settings
+.idea
 ##############################
 ## IntelliJ
 ##############################
@@ -12,5 +13,5 @@ out/
 *.iml
 *.ipr
 *.iws
-
 .DS_Store
+

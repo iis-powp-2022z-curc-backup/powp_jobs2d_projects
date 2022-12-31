@@ -6,8 +6,7 @@ import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
 
 public class DriverFeature {
-
-	private static DriverManager driverManager = new DriverManager();
+	private static final DriverManager driverManager = new DriverManager();
 	private static Application app;
 
 	public static DriverManager getDriverManager() {
@@ -39,6 +38,7 @@ public class DriverFeature {
 	 * Update driver info.
 	 */
 	public static void updateDriverInfo() {
+
 		app.updateInfo(driverManager.getCurrentDriver().toString());
 	}
 
