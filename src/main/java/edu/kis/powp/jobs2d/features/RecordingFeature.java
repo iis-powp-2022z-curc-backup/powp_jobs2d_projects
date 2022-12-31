@@ -1,7 +1,6 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.drivers.DriverChangeObserver;
+import edu.kis.powp.jobs2d.drivers.MaintainRecordingAfterDriverChangeObserver;
 import edu.kis.powp.jobs2d.drivers.RecordingManager;
 
 public class RecordingFeature {
@@ -14,7 +13,7 @@ public class RecordingFeature {
 	public static void setupRecordingPlugin() {
 		recordingManager = new RecordingManager();
 
-		DriverChangeObserver driverObserver = new DriverChangeObserver();
+		MaintainRecordingAfterDriverChangeObserver driverObserver = new MaintainRecordingAfterDriverChangeObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 	}
 
