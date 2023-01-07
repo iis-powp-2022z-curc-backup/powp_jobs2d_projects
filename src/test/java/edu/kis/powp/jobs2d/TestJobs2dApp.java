@@ -8,8 +8,13 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
+import edu.kis.powp.jobs2d.commands.SubscribeCommandsCounterVisitor;
+import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
@@ -20,6 +25,9 @@ import edu.kis.powp.jobs2d.events.SelectTestFigureOptionListener;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.observer.Publisher;
+import edu.kis.powp.observer.Subscriber;
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -45,6 +53,13 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupCommandTests(Application application) {
+		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
+
+		Publisher publisher = manager.getChangePublisher();
+
+		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
+		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
+		
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
 
@@ -58,6 +73,9 @@ public class TestJobs2dApp {
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
+		DriverInfoUpdateObserver driverObserver = new DriverInfoUpdateObserver();
+		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
+
 		Job2dDriver loggerDriver = new LoggerDriver();
 		DriverFeature.addDriver("Logger driver", loggerDriver);
 
@@ -80,7 +98,9 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		DriverFeature.updateDriverInfo();
+		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		DriverFeature.addDriver("Special line Simulator", driver);
+
 	}
 
 	private static void setupWindows(Application application) {
@@ -117,6 +137,23 @@ public class TestJobs2dApp {
 	}
 
 	/**
+	 * Setup menu option for start/stop commands recording
+	 *
+	 * @param application Application context
+	 */
+	private static void setupRecording(Application application) {
+		application.addComponentMenu(RecordingFeature.class, "Recording");
+		application.addComponentMenuElement(RecordingFeature.class, "Start recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().startRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Stop recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().stopRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Load recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().loadRecording());
+		application.addComponentMenuElement(RecordingFeature.class, "Clear recording",
+				(ActionEvent e) -> RecordingFeature.getRecordingManager().clearRecording());
+	}
+
+	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -125,12 +162,14 @@ public class TestJobs2dApp {
 				Application app = new Application("Jobs 2D");
 				DrawerFeature.setupDrawerPlugin(app);
 				CommandsFeature.setupCommandManager();
-
 				DriverFeature.setupDriverPlugin(app);
+				RecordingFeature.setupRecordingPlugin();
+
 				setupDrivers(app);
 				setupPresetTests(app);
 				setupCommandTests(app);
 				setupLogger(app);
+				setupRecording(app);
 				setupWindows(app);
 
 				app.setVisibility(true);
