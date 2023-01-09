@@ -2,13 +2,11 @@ package edu.kis.powp.jobs2d.command.manager;
 
 import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import java.util.List;
 import edu.kis.powp.observer.Publisher;
-
 import edu.kis.powp.jobs2d.command.gui.CommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.DriverFeature;
-
-import java.util.List;
 
 /**
  * Driver command Manager.
