@@ -26,7 +26,6 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
-import edu.kis.powp.observer.Subscriber;
 
 
 public class TestJobs2dApp {
