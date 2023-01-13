@@ -80,9 +80,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 1;
 		content.add(btnClearObservers, c);
 
-		DrawPanelController drawPanelController = new DrawPanelController();//Controller for drawning
+		DrawPanelController drawPanelController = new DrawPanelController();
 		drawPanelController.initialize(currentCommandPreview);
-		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");//Create adapter for drawning
+		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
 	}
 
 	private void clearCommand() {
