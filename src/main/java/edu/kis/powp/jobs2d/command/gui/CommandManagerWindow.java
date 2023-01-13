@@ -5,8 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
@@ -55,7 +57,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 1;
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
-		
+
 		importCommandField = new JTextArea("");
 		importCommandField.setEditable(true);
 		c.fill = GridBagConstraints.BOTH;
@@ -65,7 +67,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(importCommandField, c);
 		// TODO
 //		updateCurrentCommandField();
-		
+
 		JButton btnImportCommand = new JButton("Import command");
 		btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -92,9 +94,17 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	}
 
 	private void importCommand() {
-		// TODO implementation
+		JFileChooser fileChooser = new JFileChooser();
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String path = fileChooser.getSelectedFile().getAbsolutePath();
+			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+			logger.info(path);
+
+			updateCurrentCommandField();
+		}
 	}
-	
+
 	private void clearCommand() {
 		commandManager.clearCurrentCommand();
 		updateCurrentCommandField();
