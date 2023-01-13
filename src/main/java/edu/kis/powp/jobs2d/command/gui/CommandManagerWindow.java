@@ -27,9 +27,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	private Job2dDriver previewAdapter;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9204679248304669948L;
 
 	public CommandManagerWindow(DriverCommandManager commandManager) {
@@ -60,12 +57,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
 
-		currentCommandPreview = new JPanel();//added panel to preview
+		currentCommandPreview = new JPanel();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.weighty = 3;
-		content.add(currentCommandPreview, c);//Added for main screen
+		content.add(currentCommandPreview, c);
 
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -91,7 +88,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private void clearCommand() {
 		commandManager.clearCurrentCommand();
 		updateCurrentCommandField();
-		updateCurrentCommandPreview();//uzycie
+		updateCurrentCommandPreview();
 	}
 
 	public void updateCurrentCommandField() {
@@ -106,7 +103,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		}
 	}
 
-	private void clearCurrentCommandPreview() {//Function for clearing screen
+	private void clearCurrentCommandPreview() {
 		currentCommandPreview.getGraphics().clearRect(0, 0, getWidth(), getHeight());
 	}
 
