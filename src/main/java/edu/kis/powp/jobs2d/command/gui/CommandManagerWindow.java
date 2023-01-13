@@ -4,8 +4,13 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -100,6 +105,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 			String path = fileChooser.getSelectedFile().getAbsolutePath();
 			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 			logger.info(path);
+
+			StringBuilder fileContent = new StringBuilder();
+			try {
+				Stream<String> stream = Files.lines(Paths.get(path));
+				stream.forEach(s -> fileContent.append(s));
+				logger.info(fileContent.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			updateCurrentCommandField();
 		}
