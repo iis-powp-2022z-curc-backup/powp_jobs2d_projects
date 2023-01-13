@@ -7,9 +7,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -20,7 +18,7 @@ import javax.swing.JTextArea;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.imports.ImportTxtCommand;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.observer.Subscriber;
 
@@ -109,27 +107,25 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 			logger.info(path);
 
-			StringBuilder fileContent = new StringBuilder();
-			try {
-				Stream<String> stream = Files.lines(Paths.get(path));
-				stream.forEach(s -> fileContent.append(s).append("\n"));
-
-				List<DriverCommand> commandList = new ArrayList<>();
-				Scanner scanner = new Scanner(fileContent.toString());
-
-				while (scanner.hasNextLine()) {
-					logger.info(scanner.nextLine());
-					commandList.add(new OperateToCommand(10, 10));
-					commandList.add(new OperateToCommand(20, 40));
-				}
-
-				commandManager.setCurrentCommand(commandList, path);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			String fileContent = getTextFromFile(path);
+			// TODO implement choosing different types
+			List<DriverCommand> commandList = new ImportTxtCommand().importCommand(fileContent);
+			commandManager.setCurrentCommand(commandList, path);
 
 			updateCurrentCommandField();
 		}
+	}
+
+	private String getTextFromFile(String path) {
+		StringBuilder fileContent = new StringBuilder();
+		try {
+			Stream<String> stream = Files.lines(Paths.get(path));
+			stream.forEach(s -> fileContent.append(s).append("\n"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return fileContent.toString();
 	}
 
 	private void clearCommand() {
