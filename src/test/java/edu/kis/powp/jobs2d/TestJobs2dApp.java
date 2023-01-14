@@ -62,6 +62,7 @@ public class TestJobs2dApp {
 		
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
+		application.addTest("Load exceeding basic canvas command", new SelectExceedingBasicCanvasCommandOptionListener());
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
