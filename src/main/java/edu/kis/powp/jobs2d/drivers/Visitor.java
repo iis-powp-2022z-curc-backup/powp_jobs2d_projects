@@ -1,9 +1,11 @@
 package edu.kis.powp.jobs2d.drivers;
 
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
+
 public interface Visitor {
     public void visitCommandsRecorderDriver(CommandsRecorderDriver commandsRecorderDriver);
-    public void visitDriverManager(DriverManager driverManager);
-    public void visitMaintainRecordingAfterDriverChangeObserver(MaintainRecordingAfterDriverChangeObserver maintainRecordingAfterDriverChangeObserver);
-    public void visitRecordingManager(RecordingManager recordingManager);
-    public void visitSelectDriverMenuOptionListener(SelectDriverMenuOptionListener selectDriverMenuOptionListener);
+    public void visitLineDriverAdapter(LineDriverAdapter lineDriverAdapter);
+    public void visitDriverComposite(DriverComposite driverComposite);
+
 }
