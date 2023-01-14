@@ -37,4 +37,8 @@ public class CommandBoundariesCheckVisitor implements Visitor{
 	public Dimension getSetPositionDimensions(){
 		return this.setPositionDimensions;
 	}
+
+	public boolean getResult(){
+		return false;
+	}
 }
