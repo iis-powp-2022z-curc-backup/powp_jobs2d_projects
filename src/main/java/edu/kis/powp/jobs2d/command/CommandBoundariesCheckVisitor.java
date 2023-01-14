@@ -1,11 +1,17 @@
 package edu.kis.powp.jobs2d.command;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
 
 public class CommandBoundariesCheckVisitor implements Visitor{
 	private Dimension operateToDimensions = new Dimension();
 	private Dimension setPositionDimensions = new Dimension();
+	private final JPanel canvas;
+
+	public CommandBoundariesCheckVisitor(JPanel canvas) {
+		this.canvas = canvas;
+	}
 
 	@Override
 	public void visitICompoundCommand(ICompoundCommand iCompoundCommand) {
@@ -39,6 +45,7 @@ public class CommandBoundariesCheckVisitor implements Visitor{
 	}
 
 	public boolean getResult(){
+		System.out.println(canvas.getSize());
 		return false;
 	}
 }
