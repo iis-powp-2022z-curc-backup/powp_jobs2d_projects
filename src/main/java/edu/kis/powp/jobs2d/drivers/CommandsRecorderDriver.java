@@ -33,4 +33,8 @@ public class CommandsRecorderDriver implements Job2dDriver {
 	public void clear() {
 		commands.clear();
 	}
+
+	public void accept(Visitor visitor){
+		visitor.visitCommandsRecorderDriver(this);
+	}
 }
