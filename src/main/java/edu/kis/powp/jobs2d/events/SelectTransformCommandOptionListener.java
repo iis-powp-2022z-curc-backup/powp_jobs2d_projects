@@ -11,7 +11,7 @@ import java.util.List;
 public class SelectTransformCommandOptionListener implements ActionListener {
 
     private final DriverManager driverManager;
-    private ComplexTransformerCommand transformerCommands;
+    private TransformerCommand transformerCommands;
     private String name;
 
     public SelectTransformCommandOptionListener(DriverManager driverManager, ComplexTransformerCommand commands, String name) {
@@ -22,6 +22,6 @@ public class SelectTransformCommandOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        driverManager.transformCurrentDriver(transformerCommands, name);
+        driverManager.transformCurrentDriver((ComplexTransformerCommand) transformerCommands, name);
     }
 }

@@ -31,7 +31,7 @@ import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
 import edu.kis.powp.observer.Subscriber;
 
-import static edu.kis.powp.jobs2d.Job2dDriverTest.driver;
+
 
 
 public class TestJobs2dApp {
@@ -67,10 +67,8 @@ public class TestJobs2dApp {
 
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
-
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
-		// Selecting another driver resets previous transformer commands for this driver.
-		// Translate
+
 		List<TransformerCommand> translateCommands = new ArrayList<>();
 		translateCommands.add(new TranslateCommand(50, 50));
 		ComplexTransformerCommand translateComplexCommand = new ComplexTransformerCommand(translateCommands);
@@ -129,7 +127,7 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		LineDriverAdapter driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Special line Simulator", driver);
 
 	}

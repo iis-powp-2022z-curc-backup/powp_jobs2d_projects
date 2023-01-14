@@ -7,7 +7,7 @@ import edu.kis.powp.jobs2d.command.transformers.TransformerCommand;
 
 public class TransformerDriver implements Job2dDriver {
     private Job2dDriver job2dDriver;
-    private ComplexTransformerCommand transformerCommands;
+    private TransformerCommand transformerCommands;
     private String name;
 
     public TransformerDriver(Job2dDriver job2dDriver, ComplexTransformerCommand transformerCommands, String name) {
