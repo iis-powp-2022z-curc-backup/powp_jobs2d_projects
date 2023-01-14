@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -113,7 +113,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		if (observersDeleted) {
 			resetObservers(resetButton);
 		} else {
-			this.observerList = this.commandManager.getChangePublisher().getSubscribers();
+			this.observerList = new ArrayList<Subscriber>(this.commandManager.getChangePublisher().getSubscribers());
 			commandManager.getChangePublisher().clearObservers();
 			this.updateObserverListField();
 			observersDeleted = true;
