@@ -10,6 +10,8 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.CommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.command.ICanvas;
+import edu.kis.powp.jobs2d.command.JPanelCanvasAdapter;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -62,7 +64,8 @@ public class TestJobs2dApp {
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
 
-		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(application.getFreePanel());
+		ICanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
+		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(canvas);
 		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
 		
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
