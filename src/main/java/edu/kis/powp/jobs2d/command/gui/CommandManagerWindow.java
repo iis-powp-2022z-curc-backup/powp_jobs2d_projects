@@ -4,13 +4,21 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.imports.ImportCommandFactory;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.observer.Subscriber;
 
@@ -24,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private JTextArea observerListField;
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 9204679248304669948L;
 
@@ -55,7 +63,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 1;
 		content.add(currentCommandField, c);
 		updateCurrentCommandField();
-		
+
 		importCommandField = new JTextArea("");
 		importCommandField.setEditable(true);
 		c.fill = GridBagConstraints.BOTH;
@@ -63,9 +71,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(importCommandField, c);
-		// TODO
-//		updateCurrentCommandField();
-		
+
 		JButton btnImportCommand = new JButton("Import command");
 		btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -92,9 +98,40 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	}
 
 	private void importCommand() {
-		// TODO implementation
+		JFileChooser fileChooser = new JFileChooser();
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String path = fileChooser.getSelectedFile().getAbsolutePath();
+			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+			logger.info(path);
+
+			try {
+				String[] pathTokenized = path.split("\\.");
+				String extension = pathTokenized[pathTokenized.length-1];
+				List<DriverCommand> commandList = new ImportCommandFactory()
+						.importer(extension)
+						.importCommand(getFileContent(path));
+				commandManager.setCurrentCommand(commandList, path);
+			} catch (Exception ex) {
+				logger.info("Exception in command importing. " + ex);
+			}
+
+			updateCurrentCommandField();
+		}
 	}
-	
+
+	private String getFileContent(String path) {
+		StringBuilder fileContent = new StringBuilder();
+		try {
+			Stream<String> stream = Files.lines(Paths.get(path));
+			stream.forEach(s -> fileContent.append(s).append("\n"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return fileContent.toString();
+	}
+
 	private void clearCommand() {
 		commandManager.clearCurrentCommand();
 		updateCurrentCommandField();

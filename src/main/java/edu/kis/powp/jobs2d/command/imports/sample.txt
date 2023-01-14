@@ -1,0 +1,4 @@
+SetPosition -16 -16
+OperateTo -16 16
+OperateTo -16 16
+OperateTo 16 16
