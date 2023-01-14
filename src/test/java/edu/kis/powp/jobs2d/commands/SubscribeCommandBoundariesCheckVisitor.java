@@ -20,6 +20,6 @@ public class SubscribeCommandBoundariesCheckVisitor implements Subscriber {
 	public void update() {
 		manager.getCurrentCommand().accept(commandBoundariesCheckVisitor);
 
-		this.logger.info("Czy ta komenda rysuje poza canvas: " + commandBoundariesCheckVisitor.getResult());
+		this.logger.info("Czy ta komenda rysuje poza canvas: " + commandBoundariesCheckVisitor.isExceedingCanvasBoundaries());
 	}
 }
