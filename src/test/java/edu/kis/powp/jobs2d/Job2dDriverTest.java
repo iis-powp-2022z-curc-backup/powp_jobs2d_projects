@@ -3,13 +3,14 @@ package edu.kis.powp.jobs2d;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.magicpresets.FiguresJoe;
 
+
 /**
  * Plotter test.
  * 
  * @author Dominik
  */
 public class Job2dDriverTest {
-	private static Job2dDriver driver = new StubDriver();
+	private static final Job2dDriver driver = new StubDriver();
 
 	/**
 	 * Driver test.
@@ -20,6 +21,7 @@ public class Job2dDriverTest {
 
 	private static class StubDriver implements Job2dDriver {
 
+
 		@Override
 		public void operateTo(int x, int y) {
 			System.out.println("Driver operateTo action...");
@@ -29,5 +31,5 @@ public class Job2dDriverTest {
 		public void setPosition(int x, int y) {
 			System.out.println("Driver setPosition action...");
 		}
-	};
+	}
 }
