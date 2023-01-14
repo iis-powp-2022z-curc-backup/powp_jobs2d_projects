@@ -9,4 +9,5 @@ public interface CommandManager {
     void setCurrentCommand(DriverCommand driverCommand);
     String getCurrentCommandString();
     Publisher getChangePublisher();
+    DriverCommand getCurrentCommand();
 }
