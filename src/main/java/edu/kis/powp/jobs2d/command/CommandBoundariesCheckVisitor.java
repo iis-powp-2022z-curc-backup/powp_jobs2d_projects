@@ -40,8 +40,8 @@ public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundarie
 	}
 
 	@Override
-	public void checkExceedingBoundaries(int width, int height) {
-		if(height<canvas.getHeight()/2 || width <canvas.getWidth()/2){
+	public void checkExceedingBoundaries(int X, int Y) {
+		if(X<canvas.getHeight()/2 || Y <canvas.getWidth()/2){
 			isExceedingBoundaries = true;
 		}
 	}
