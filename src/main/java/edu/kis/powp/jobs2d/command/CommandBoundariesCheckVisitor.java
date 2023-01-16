@@ -5,10 +5,10 @@ import java.util.Iterator;
 import static java.lang.Math.abs;
 
 public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundariesCheckStrategy{
-	private final ICanvas canvas;
+	private final IRectangularCanvas canvas;
 	private boolean isExceedingBoundaries = false;
 
-	public CommandBoundariesCheckVisitor(ICanvas canvas) {
+	public CommandBoundariesCheckVisitor(IRectangularCanvas canvas) {
 		this.canvas = canvas;
 	}
 
