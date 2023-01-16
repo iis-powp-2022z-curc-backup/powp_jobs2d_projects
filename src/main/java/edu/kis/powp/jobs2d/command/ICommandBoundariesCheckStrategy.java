@@ -1,5 +1,5 @@
 package edu.kis.powp.jobs2d.command;
 
 public interface ICommandBoundariesCheckStrategy {
-	void checkExceedingBoundaries();
+	void checkExceedingBoundaries(int width, int height);
 }

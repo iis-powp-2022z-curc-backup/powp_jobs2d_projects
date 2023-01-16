@@ -27,12 +27,12 @@ public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundarie
 
 	@Override
 	public void visitOperateToCommand(OperateToCommand operateToCommand) {
-		isExceedingBoundaries = abs(operateToCommand.getPosX()) > canvas.getWidth() / 2 || abs(operateToCommand.getPosY()) > canvas.getHeight() / 2;
+		checkExceedingBoundaries(abs(operateToCommand.getPosX()),abs(operateToCommand.getPosY()));
 	}
 
 	@Override
 	public void visitSetPositionCommand(SetPositionCommand setPositionCommand) {
-		isExceedingBoundaries = abs(setPositionCommand.getPosX()) > canvas.getWidth() / 2 || abs(setPositionCommand.getPosY()) > canvas.getHeight() / 2;
+		checkExceedingBoundaries(abs(setPositionCommand.getPosX()),abs(setPositionCommand.getPosY()));
 	}
 
 	public boolean isExceedingCanvasBoundaries(){
@@ -40,7 +40,9 @@ public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundarie
 	}
 
 	@Override
-	public void checkExceedingBoundaries() {
-
+	public void checkExceedingBoundaries(int width, int height) {
+		if(height<canvas.getHeight()/2 || width <canvas.getWidth()/2){
+			isExceedingBoundaries = true;
+		}
 	}
 }
