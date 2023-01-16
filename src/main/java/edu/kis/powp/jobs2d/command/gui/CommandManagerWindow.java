@@ -6,30 +6,32 @@ import java.util.List;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
 
-	private DriverCommandManager commandManager;
+	private List<Subscriber> observerList;
+	private boolean observersDeleted = false;
+	private final CommandManager commandManager;
 
-	private JTextArea currentCommandField;
-	private JPanel currentCommandPreview;
+	private final JTextArea currentCommandField;
+	private final JPanel currentCommandPreview;
 
 	private String observerListString;
-	private JTextArea observerListField;
+	private final JTextArea observerListField;
 
 	private Job2dDriver previewAdapter;
 
 	private static final long serialVersionUID = 9204679248304669948L;
 
-	public CommandManagerWindow(DriverCommandManager commandManager) {
+	public CommandManagerWindow(CommandManager commandManager) {
 		this.setTitle("Command Manager");
 		this.setSize(800, 800);
 		Container content = this.getContentPane();
@@ -73,13 +75,24 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		content.add(btnClearCommand, c);
 
 		JButton btnClearObservers = new JButton("Delete observers");
-		btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers());
+		btnClearObservers.addActionListener((ActionEvent e) -> this.deleteObservers(btnClearObservers));
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(btnClearObservers, c);
 
+		JButton btnRunCommand = new JButton("Run command");
+		btnRunCommand.addActionListener((ActionEvent e) -> this.runCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnRunCommand, c);
+	}
+
+	private void runCommand() {
+		commandManager.runCommand();
 		DrawPanelController drawPanelController = new DrawPanelController();
 		drawPanelController.initialize(currentCommandPreview);
 		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
@@ -95,6 +108,32 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		currentCommandField.setText(commandManager.getCurrentCommandString());
 	}
 
+
+	public void deleteObservers(JButton resetButton) {
+		if (observersDeleted) {
+			resetObservers(resetButton);
+		} else {
+			this.observerList = new ArrayList<Subscriber>(this.commandManager.getChangePublisher().getSubscribers());
+			commandManager.getChangePublisher().clearObservers();
+			this.updateObserverListField();
+			observersDeleted = true;
+			resetButton.setText("Reset observers");
+		}
+	}
+
+	public void resetObservers(JButton deleteButton) {
+		commandManager.getChangePublisher().clearObservers();
+		observersDeleted = false;
+		deleteButton.setText("Delete observers");
+
+		if (observerList != null) {
+			for (Subscriber subscriber : observerList) {
+				this.commandManager.getChangePublisher().addSubscriber(subscriber);
+			}
+		}
+		this.updateObserverListField();
+	}
+
 	public void updateCurrentCommandPreview() {
 		clearCurrentCommandPreview();
 		DriverCommand command = commandManager.getCurrentCommand();
@@ -105,11 +144,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	private void clearCurrentCommandPreview() {
 		currentCommandPreview.getGraphics().clearRect(0, 0, getWidth(), getHeight());
-	}
-
-	public void deleteObservers() {
-		commandManager.getChangePublisher().clearObservers();
-		this.updateObserverListField();
 	}
 
 	private void updateObserverListField() {
@@ -127,11 +161,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	@Override
 	public void HideIfVisibleAndShowIfHidden() {
 		updateObserverListField();
-		if (this.isVisible()) {
-			this.setVisible(false);
-		} else {
-			this.setVisible(true);
-		}
+		this.setVisible(!this.isVisible());
 	}
 
 }
