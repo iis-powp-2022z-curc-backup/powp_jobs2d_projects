@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +12,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
@@ -26,13 +29,17 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
+import edu.kis.powp.observer.Subscriber;
+
+
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	/**
 	 * Setup test concerning preset figures in context.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupPresetTests(Application application) {
@@ -47,7 +54,7 @@ public class TestJobs2dApp {
 
 	/**
 	 * Setup test using driver commands in context.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupCommandTests(Application application) {
@@ -57,17 +64,38 @@ public class TestJobs2dApp {
 
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
-		
+
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
-
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
+
+
+			List<TransformerCommand> rotateCommands = new ArrayList<>();
+			rotateCommands.add(new RotateCommand(10));
+			ComplexTransformerCommand rotateComplexCommand = new ComplexTransformerCommand(rotateCommands);
+			application.addTest("Rotate",
+					new SelectTransformCommandOptionListener(
+							DriverFeature.getDriverManager(), rotateComplexCommand, "Rotate"));
+
+			List<TransformerCommand> scaleCommands = new ArrayList<>();
+			scaleCommands.add(new ScaleCommand(1.1, 0.9));
+			ComplexTransformerCommand scaleComplexCommand = new ComplexTransformerCommand(scaleCommands);
+			application.addTest("Scale",
+					new SelectTransformCommandOptionListener(
+							DriverFeature.getDriverManager(), scaleComplexCommand, "Scale"));
+
+			List<TransformerCommand> translateCommands = new ArrayList<>();
+			translateCommands.add(new TranslateCommand(10, 10));
+			ComplexTransformerCommand translateComplexCommand = new ComplexTransformerCommand(translateCommands);
+			application.addTest("Translate",
+					new SelectTransformCommandOptionListener(
+							DriverFeature.getDriverManager(), translateComplexCommand, "Translate"));
 
 	}
 
 	/**
 	 * Setup driver manager, and set default Job2dDriver for application.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupDrivers(Application application) {
@@ -96,7 +124,7 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		LineDriverAdapter driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Special line Simulator", driver);
 
 	}
@@ -113,7 +141,7 @@ public class TestJobs2dApp {
 
 	/**
 	 * Setup menu for adjusting logging settings.
-	 * 
+	 *
 	 * @param application Application context.
 	 */
 	private static void setupLogger(Application application) {
