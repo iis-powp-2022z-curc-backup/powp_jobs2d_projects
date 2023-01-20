@@ -3,7 +3,7 @@ package edu.kis.powp.jobs2d.command.transformers;
 import java.util.List;
 
 public class ComplexTransformerCommand implements TransformerCommand {
-    private List<TransformerCommand> transformerCommands;
+    private final List<TransformerCommand> transformerCommands;
 
     public ComplexTransformerCommand(List<TransformerCommand> transformerCommands) {
         this.transformerCommands = transformerCommands;
