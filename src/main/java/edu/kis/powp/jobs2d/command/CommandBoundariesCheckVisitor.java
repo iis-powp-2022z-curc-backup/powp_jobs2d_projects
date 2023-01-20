@@ -4,12 +4,14 @@ import java.util.Iterator;
 
 import static java.lang.Math.abs;
 
-public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundariesCheckStrategy{
+public class CommandBoundariesCheckVisitor implements Visitor{
 	private final ICanvas canvas;
 	private boolean isExceedingBoundaries = false;
+	private final ICommandBoundariesCheckStrategy strategy;
 
-	public CommandBoundariesCheckVisitor(IRectangularCanvas canvas) {
+	public CommandBoundariesCheckVisitor(ICanvas canvas, ICommandBoundariesCheckStrategy strategy) {
 		this.canvas = canvas;
+		this.strategy = strategy;
 	}
 
 	@Override
@@ -27,22 +29,15 @@ public class CommandBoundariesCheckVisitor implements Visitor, ICommandBoundarie
 
 	@Override
 	public void visitOperateToCommand(OperateToCommand operateToCommand) {
-		checkExceedingBoundaries(abs(operateToCommand.getPosX()),abs(operateToCommand.getPosY()));
+		isExceedingBoundaries = strategy.checkExceedingBoundaries(canvas, abs(operateToCommand.getPosX()),abs(operateToCommand.getPosY()));
 	}
 
 	@Override
 	public void visitSetPositionCommand(SetPositionCommand setPositionCommand) {
-		checkExceedingBoundaries(abs(setPositionCommand.getPosX()),abs(setPositionCommand.getPosY()));
+		isExceedingBoundaries = strategy.checkExceedingBoundaries(canvas, abs(setPositionCommand.getPosX()),abs(setPositionCommand.getPosY()));
 	}
 
 	public boolean isExceedingCanvasBoundaries(){
 		return isExceedingBoundaries;
-	}
-
-	@Override
-	public void checkExceedingBoundaries(int X, int Y) {
-		if(X<canvas.getHeight()/2 || Y <canvas.getWidth()/2){
-			isExceedingBoundaries = true;
-		}
 	}
 }
