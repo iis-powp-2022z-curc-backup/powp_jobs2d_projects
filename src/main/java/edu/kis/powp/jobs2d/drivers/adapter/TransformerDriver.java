@@ -10,7 +10,7 @@ public class TransformerDriver implements Job2dDriver {
     private TransformerCommand transformerCommands;
     private String name;
 
-    public TransformerDriver(Job2dDriver job2dDriver, ComplexTransformerCommand transformerCommands, String name) {
+    public TransformerDriver(Job2dDriver job2dDriver, TransformerCommand transformerCommands, String name) {
         this.job2dDriver = job2dDriver;
         this.transformerCommands = transformerCommands;
         this.name = name;
