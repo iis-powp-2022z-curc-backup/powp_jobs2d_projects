@@ -4,7 +4,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.ArrayList;
+import java.util.List;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
@@ -16,6 +17,7 @@ import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandsCounterVisitor;
 import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
@@ -26,6 +28,7 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -63,6 +66,37 @@ public class TestJobs2dApp {
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
+		List<TransformerCommand> translateCommands = new ArrayList<>();
+		translateCommands.add(new TranslateCommand(10, 10));
+		ComplexTransformerCommand translateComplexCommand = new ComplexTransformerCommand(translateCommands);
+		application.addTest("Translate",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), translateComplexCommand, "Translate"));
+
+		List<TransformerCommand> scaleCommands = new ArrayList<>();
+		scaleCommands.add(new ScaleCommand(1.1, 0.9));
+		ComplexTransformerCommand scaleComplexCommand = new ComplexTransformerCommand(scaleCommands);
+		application.addTest("Scale",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), scaleComplexCommand, "Scale"));
+
+		List<TransformerCommand> rotateCommands = new ArrayList<>();
+		rotateCommands.add(new RotateCommand(10));
+		ComplexTransformerCommand rotateComplexCommand = new ComplexTransformerCommand(rotateCommands);
+		application.addTest("Rotate",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), rotateComplexCommand, "Rotate"));
+
+		List<TransformerCommand> complexTransformerCommands = new ArrayList<>();
+		complexTransformerCommands.add(new TranslateCommand(50, 50));
+		complexTransformerCommands.add(new ScaleCommand(0.5, 0.5));
+		complexTransformerCommands.add(new RotateCommand(180));
+		ComplexTransformerCommand complexTransformerCommand =
+				new ComplexTransformerCommand(complexTransformerCommands);
+		application.addTest("Complex transform",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), complexTransformerCommand, "Transform"));
+		DriverFeature.updateDriverInfo();
 	}
 
 	/**
