@@ -2,8 +2,6 @@ package edu.kis.powp.jobs2d.command;
 
 import java.util.Iterator;
 
-import static java.lang.Math.abs;
-
 public class CommandBoundariesCheckVisitor implements Visitor{
 	private final ICanvas canvas;
 	private boolean isExceedingBoundaries = false;
