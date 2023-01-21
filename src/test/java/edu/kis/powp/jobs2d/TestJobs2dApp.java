@@ -13,6 +13,8 @@ import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
 import edu.kis.powp.jobs2d.features.MainFeature;
+import edu.kis.powp.jobs2d.drivers.DistanceDriverActionListener;
+import edu.kis.powp.jobs2d.drivers.adapter.DistanceDriverAdapter;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -120,6 +122,15 @@ public class TestJobs2dApp {
 		DriverFeature.getDriverManager().setCurrentDriver(driver1);
 
 		DriverFeature.addDriver("Special line Simulator", driver2);
+
+		DriverComposite compositeLineDriverAndDistance = new DriverComposite();
+		DistanceDriverAdapter distanceDriver = new DistanceDriverAdapter("distance");
+		distanceDriver.add(driver1);
+		compositeLineDriverAndDistance.add(distanceDriver);
+		DriverFeature.addDriver("Distance and line driver", compositeLineDriverAndDistance);
+
+		DistanceDriverActionListener distanceDriverActionListener = new DistanceDriverActionListener(distanceDriver);
+		application.addComponentMenuElement(DistanceDriverAdapter.class, "Refill ink", distanceDriverActionListener);
 
 		DriverComposite compositeLoggerSpecialLineComboDriver = new DriverComposite();
 		compositeLoggerSpecialLineComboDriver.add(loggerDriver);
