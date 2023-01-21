@@ -3,9 +3,9 @@ package edu.kis.powp.jobs2d.command;
 import static java.lang.Math.abs;
 
 public class RectangularCanvasBoundariesCheckStrategy implements ICanvasBoundariesCheckStrategy {
-	private final ICanvas canvas;
+	private final IRectangularCanvas canvas;
 
-	public RectangularCanvasBoundariesCheckStrategy(ICanvas canvas) {
+	public RectangularCanvasBoundariesCheckStrategy(IRectangularCanvas canvas) {
 		this.canvas = canvas;
 	}
 

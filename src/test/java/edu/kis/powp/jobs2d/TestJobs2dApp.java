@@ -60,7 +60,7 @@ public class TestJobs2dApp {
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
 
-		ICanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
+		IRectangularCanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
 		ICanvasBoundariesCheckStrategy strategy = new RectangularCanvasBoundariesCheckStrategy(canvas);
 		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(strategy);
 		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
