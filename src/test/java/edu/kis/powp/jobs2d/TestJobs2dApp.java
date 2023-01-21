@@ -75,9 +75,6 @@ public class TestJobs2dApp {
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
-
-
-
 		TransformerCommand TranslateCommand = new TranslateCommand(10,10);
 		application.addTest("Translate",
 				new SelectTransformCommandOptionListener(
