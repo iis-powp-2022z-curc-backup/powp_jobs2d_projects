@@ -32,4 +32,11 @@ public class OperateToCommand implements DriverCommand {
 		visitor.visitOperateToCommand(this);
 	}
 
+	public int getPosX(){
+		return this.posX;
+	}
+	public int getPosY(){
+		return this.posY;
+	}
+
 }

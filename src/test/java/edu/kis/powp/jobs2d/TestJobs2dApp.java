@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +9,8 @@ import java.util.List;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -60,9 +61,15 @@ public class TestJobs2dApp {
 
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
+
+		IRectangularCanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
+		ICanvasBoundariesCheckStrategy strategy = new RectangularCanvasBoundariesCheckStrategy(canvas);
+		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(strategy);
+		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
 		
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
+		application.addTest("Load exceeding basic canvas command", new SelectExceedingBasicCanvasCommandOptionListener());
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
