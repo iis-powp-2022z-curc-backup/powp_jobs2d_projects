@@ -3,12 +3,11 @@ package edu.kis.powp.jobs2d.command;
 import java.util.Iterator;
 
 public class CommandBoundariesCheckVisitor implements Visitor{
-	private final ICanvas canvas;
+
 	private boolean isExceedingBoundaries = false;
 	private final ICanvasBoundariesCheckStrategy strategy;
 
-	public CommandBoundariesCheckVisitor(ICanvas canvas, ICanvasBoundariesCheckStrategy strategy) {
-		this.canvas = canvas;
+	public CommandBoundariesCheckVisitor(ICanvasBoundariesCheckStrategy strategy) {
 		this.strategy = strategy;
 	}
 
@@ -27,12 +26,12 @@ public class CommandBoundariesCheckVisitor implements Visitor{
 
 	@Override
 	public void visitOperateToCommand(OperateToCommand operateToCommand) {
-		isExceedingBoundaries = strategy.checkExceedingBoundaries(canvas, operateToCommand.getPosX(), operateToCommand.getPosY());
+		isExceedingBoundaries = strategy.checkExceedingBoundaries(operateToCommand.getPosX(), operateToCommand.getPosY());
 	}
 
 	@Override
 	public void visitSetPositionCommand(SetPositionCommand setPositionCommand) {
-		isExceedingBoundaries = strategy.checkExceedingBoundaries(canvas, setPositionCommand.getPosX(), setPositionCommand.getPosY());
+		isExceedingBoundaries = strategy.checkExceedingBoundaries(setPositionCommand.getPosX(), setPositionCommand.getPosY());
 	}
 
 	public boolean isExceedingCanvasBoundaries(){
