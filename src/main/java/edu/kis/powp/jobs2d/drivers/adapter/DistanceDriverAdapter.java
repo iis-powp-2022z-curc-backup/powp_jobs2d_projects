@@ -13,14 +13,13 @@ public class DistanceDriverAdapter implements Job2dDriver {
     private int startX = 0, startY = 0;
     private int totalDistance = 0;
     private String name;
-    private Logger logger;
     private List<Job2dDriver> driversList = new ArrayList<>();
+    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 
-    public DistanceDriverAdapter(Logger logger, String name) {
+    public DistanceDriverAdapter(String name) {
         super();
         this.name = name;
-        this.logger = logger;
     }
 
     public void add(Job2dDriver driver) {

@@ -124,13 +124,12 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Special line Simulator", driver2);
 
 		DriverComposite compositeLineDriverAndDistance = new DriverComposite();
-		DistanceDriverAdapter distanceDriver = new DistanceDriverAdapter(Logger.getLogger("global"), "distance");
+		DistanceDriverAdapter distanceDriver = new DistanceDriverAdapter("distance");
 		distanceDriver.add(driver1);
 		compositeLineDriverAndDistance.add(distanceDriver);
 		DriverFeature.addDriver("Distance and line driver", compositeLineDriverAndDistance);
 
 		DistanceDriverActionListener distanceDriverActionListener = new DistanceDriverActionListener(distanceDriver);
-		application.addComponentMenu(DistanceDriverAdapter.class, "Ink");
 		application.addComponentMenuElement(DistanceDriverAdapter.class, "Refill ink", distanceDriverActionListener);
 
 		DriverComposite compositeLoggerSpecialLineComboDriver = new DriverComposite();
