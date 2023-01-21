@@ -1,4 +1,4 @@
-ppackage edu.kis.powp.jobs2d;
+package edu.kis.powp.jobs2d;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +11,8 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
+import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.features.MainFeature;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -65,15 +67,12 @@ public class TestJobs2dApp {
 		ICanvasBoundariesCheckStrategy strategy = new RectangularCanvasBoundariesCheckStrategy(canvas);
 		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(strategy);
 		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
-		
+
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
 		application.addTest("Load exceeding basic canvas command", new SelectExceedingBasicCanvasCommandOptionListener());
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
-
-
-
 
 		TransformerCommand TranslateCommand = new TranslateCommand(10,10);
 		application.addTest("Translate",
@@ -112,7 +111,6 @@ public class TestJobs2dApp {
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
 		Job2dDriver loggerDriver = new LoggerDriver();
-		DriverFeature.addDriver("Logger driver", loggerDriver);
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
 		Job2dDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
@@ -199,6 +197,7 @@ public class TestJobs2dApp {
 				CommandsFeature.setupCommandManager();
 				DriverFeature.setupDriverPlugin(app);
 				RecordingFeature.setupRecordingPlugin();
+				MainFeature.setupFeaturePlugin(app);
 
 				setupDrivers(app);
 				setupPresetTests(app);
