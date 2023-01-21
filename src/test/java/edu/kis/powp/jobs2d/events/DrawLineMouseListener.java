@@ -24,7 +24,6 @@ public class DrawLineMouseListener extends MouseInputAdapter {
 		yOffset = size.height / 2;
 
 		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
 		freePanel.addMouseListener(new DrawLineMouseListener());
 	}
 
