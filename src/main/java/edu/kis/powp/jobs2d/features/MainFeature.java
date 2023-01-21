@@ -13,7 +13,7 @@ public class MainFeature {
 		addFeatureCheckBox(application, "Logger", new LoggerDriver());
 	}
 
-	private static void addFeatureCheckBox(Application application, String label, LoggerDriver driver) {
+	public static void addFeatureCheckBox(Application application, String label, Job2dDriver driver) {
 		application.addComponentMenuElementWithCheckBox(MainFeature.class, label, new FeatureListener(driver), false);
 	}
 
