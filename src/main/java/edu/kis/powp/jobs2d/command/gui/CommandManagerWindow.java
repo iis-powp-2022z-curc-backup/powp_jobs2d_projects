@@ -18,7 +18,7 @@ import javax.swing.JTextArea;
 
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.imports.ImportTxtCommand;
+import edu.kis.powp.jobs2d.command.imports.ImportCommandFactory;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.observer.Subscriber;
 
@@ -32,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private JTextArea observerListField;
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 9204679248304669948L;
 
@@ -71,8 +71,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(importCommandField, c);
-		// TODO
-//		updateCurrentCommandField();
 
 		JButton btnImportCommand = new JButton("Import command");
 		btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
@@ -107,16 +105,22 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 			logger.info(path);
 
-			String fileContent = getTextFromFile(path);
-			// TODO implement choosing different types
-			List<DriverCommand> commandList = new ImportTxtCommand().importCommand(fileContent);
-			commandManager.setCurrentCommand(commandList, path);
+			try {
+				String[] pathTokenized = path.split("\\.");
+				String extension = pathTokenized[pathTokenized.length-1];
+				List<DriverCommand> commandList = new ImportCommandFactory()
+						.importer(extension)
+						.importCommand(getFileContent(path));
+				commandManager.setCurrentCommand(commandList, path);
+			} catch (Exception ex) {
+				logger.info("Exception in command importing. " + ex);
+			}
 
 			updateCurrentCommandField();
 		}
 	}
 
-	private String getTextFromFile(String path) {
+	private String getFileContent(String path) {
 		StringBuilder fileContent = new StringBuilder();
 		try {
 			Stream<String> stream = Files.lines(Paths.get(path));

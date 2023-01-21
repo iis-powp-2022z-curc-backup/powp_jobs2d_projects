@@ -1,0 +1,45 @@
+{
+  "commands": [{
+    "type": "SetPosition",
+    "position": {
+      "x": -10,
+      "y": -100
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": 10,
+      "y": -100
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": 10,
+      "y": 0
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": 50,
+      "y": 0
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": 50,
+      "y": 20
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": -10,
+      "y": 20
+    }
+  }, {
+    "type": "OperateTo",
+    "position": {
+      "x": -10,
+      "y": -100
+    }
+  }]
+}
