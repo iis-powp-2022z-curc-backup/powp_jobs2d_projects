@@ -27,4 +27,12 @@ public class ComplexCommandFactory {
 				.setName("TopSecretCommand")
 				.build();
 	}
+
+	public static ComplexCommand createExceedingBasicCanvas() {
+		return ComplexCommand.builder()
+				.addCommand(new SetPositionCommand(0, 0))
+				.addCommand(new OperateToCommand(-269, -232))
+				.setName("ExceedingBasicCanvas")
+				.build();
+	}
 }
