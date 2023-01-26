@@ -1,8 +1,6 @@
 package edu.kis.powp.jobs2d.command.manager;
 
-import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import java.util.List;
 import edu.kis.powp.observer.Publisher;
 import edu.kis.powp.jobs2d.command.gui.CommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
@@ -25,16 +23,6 @@ public class DriverCommandManager implements CommandManager {
 	public synchronized void setCurrentCommand(DriverCommand commandList) {
 		this.currentCommand = commandList;
 		changePublisher.notifyObservers();
-	}
-
-	/**
-	 * Set current command.
-	 * 
-	 * @param commandList list of commands representing a compound command.
-	 * @param name        name of the command.
-	 */
-	public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
-		setCurrentCommand(new ComplexCommand(commandList, name));
 	}
 
 	/**

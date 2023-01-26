@@ -2,8 +2,17 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
 import javax.swing.*;
 
 import java.util.ArrayList;
@@ -11,8 +20,10 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.command.imports.ImportCommandFactory;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -22,7 +33,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private final CommandManager commandManager;
 
 	private final JTextArea currentCommandField;
-	private final JPanel currentCommandPreview;
+	private JTextArea importCommandField;	private final JPanel currentCommandPreview;
 
 	private String observerListString;
 	private final JTextArea observerListField;
@@ -66,6 +77,22 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 3;
 		content.add(currentCommandPreview, c);
 
+		importCommandField = new JTextArea("");
+		importCommandField.setEditable(true);
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(importCommandField, c);
+
+		JButton btnImportCommand = new JButton("Import command");
+		btnImportCommand.addActionListener((ActionEvent e) -> this.importCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnImportCommand, c);
+
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -96,6 +123,41 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		DrawPanelController drawPanelController = new DrawPanelController();
 		drawPanelController.initialize(currentCommandPreview);
 		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
+	}
+
+	private void importCommand() {
+		JFileChooser fileChooser = new JFileChooser();
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String path = fileChooser.getSelectedFile().getAbsolutePath();
+			Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+			logger.info(path);
+
+			try {
+				String[] pathTokenized = path.split("\\.");
+				String extension = pathTokenized[pathTokenized.length-1];
+				List<DriverCommand> commandList = new ImportCommandFactory()
+						.importer(extension)
+						.importCommand(getFileContent(path));
+				commandManager.setCurrentCommand(new ComplexCommand(commandList, path));
+			} catch (Exception ex) {
+				logger.info("Exception in command importing. " + ex);
+			}
+
+			updateCurrentCommandField();
+		}
+	}
+
+	private String getFileContent(String path) {
+		StringBuilder fileContent = new StringBuilder();
+		try {
+			Stream<String> stream = Files.lines(Paths.get(path));
+			stream.forEach(s -> fileContent.append(s).append("\n"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return fileContent.toString();
 	}
 
 	private void clearCommand() {
