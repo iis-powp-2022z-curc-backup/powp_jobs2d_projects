@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
@@ -70,7 +71,7 @@ public class RecordingManager {
 	public void loadRecording() {
 		List<DriverCommand> commands = recorderDriver.getCommands();
 		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
-		manager.setCurrentCommand(commands, "Recorded commands");
+		manager.setCurrentCommand(new ComplexCommand(commands, "Recorded commands"));
 	}
 
 	public RECORDING_STATUS getStatus() {

@@ -20,11 +20,10 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.ComplexCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.imports.ImportCommandFactory;
-import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -140,7 +139,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 				List<DriverCommand> commandList = new ImportCommandFactory()
 						.importer(extension)
 						.importCommand(getFileContent(path));
-				commandManager.setCurrentCommand(commandList, path);
+				commandManager.setCurrentCommand(new ComplexCommand(commandList, path));
 			} catch (Exception ex) {
 				logger.info("Exception in command importing. " + ex);
 			}

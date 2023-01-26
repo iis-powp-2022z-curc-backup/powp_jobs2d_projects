@@ -9,7 +9,6 @@ public interface CommandManager {
     void runCommand();
     void clearCurrentCommand();
     void setCurrentCommand(DriverCommand driverCommand);
-    void setCurrentCommand(List<DriverCommand> driverCommand, String name);
     String getCurrentCommandString();
     Publisher getChangePublisher();
     DriverCommand getCurrentCommand();
