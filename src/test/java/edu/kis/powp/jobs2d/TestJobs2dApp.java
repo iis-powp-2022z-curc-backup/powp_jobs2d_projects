@@ -1,14 +1,18 @@
 package edu.kis.powp.jobs2d;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.ArrayList;
+import java.util.List;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.features.MainFeature;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -17,6 +21,7 @@ import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandsCounterVisitor;
 import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.drivers.composite.DriverComposite;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
@@ -27,6 +32,7 @@ import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
+
 
 public class TestJobs2dApp {
 	private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -58,12 +64,43 @@ public class TestJobs2dApp {
 
 		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
-		
+
+		IRectangularCanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
+		ICanvasBoundariesCheckStrategy strategy = new RectangularCanvasBoundariesCheckStrategy(canvas);
+		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(strategy);
+		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
+
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 		application.addTest("Load rectangle command", new SelectRectangleCommandOptionListener());
+		application.addTest("Load exceeding basic canvas command", new SelectExceedingBasicCanvasCommandOptionListener());
 
 		application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
+		TransformerCommand TranslateCommand = new TranslateCommand(10,10);
+		application.addTest("Translate",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), TranslateCommand, "Translate"));
+
+		TransformerCommand ScaleCommand = new ScaleCommand(1.5,1.2);
+		application.addTest("Scale",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), ScaleCommand, "Scale"));
+
+		TransformerCommand RotateCommand = new RotateCommand(270);
+		application.addTest("Rotate",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), RotateCommand, "Rotate"));
+
+		List<TransformerCommand> complexTransformerCommands = new ArrayList<>();
+		complexTransformerCommands.add(new TranslateCommand(50, 50));
+		complexTransformerCommands.add(new ScaleCommand(0.5, 0.5));
+		complexTransformerCommands.add(new RotateCommand(180));
+		ComplexTransformerCommand complexTransformerCommand =
+				new ComplexTransformerCommand(complexTransformerCommands);
+		application.addTest("Complex transform",
+				new SelectTransformCommandOptionListener(
+						DriverFeature.getDriverManager(), complexTransformerCommand, "Transform"));
+		DriverFeature.updateDriverInfo();
 	}
 
 	/**
@@ -76,7 +113,6 @@ public class TestJobs2dApp {
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
 		Job2dDriver loggerDriver = new LoggerDriver();
-		DriverFeature.addDriver("Logger driver", loggerDriver);
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
 		Job2dDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
@@ -170,6 +206,7 @@ public class TestJobs2dApp {
 				CommandsFeature.setupCommandManager();
 				DriverFeature.setupDriverPlugin(app);
 				RecordingFeature.setupRecordingPlugin();
+				MainFeature.setupFeaturePlugin(app);
 
 				setupDrivers(app);
 				setupPresetTests(app);
