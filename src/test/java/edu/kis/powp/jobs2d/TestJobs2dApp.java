@@ -9,6 +9,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -98,8 +99,15 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-		DriverFeature.addDriver("Special line Simulator", driver);
+		DriverManager manager = DriverFeature.getDriverManager();
+		Publisher publisher = manager.getChangePublisher();
+		DriverCounterVisitor driverCounterVisitor = new DriverCounterVisitor();
+
+		VisitableDriver visitableDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "test1");
+		publisher.addSubscriber(new SubscribeDriversCounterVisitor(driverCounterVisitor, visitableDriver));
+
+//		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+//		DriverFeature.addDriver("Special line Simulator", driver);
 
 	}
 
