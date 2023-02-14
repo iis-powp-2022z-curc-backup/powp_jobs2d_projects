@@ -8,7 +8,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandsRecorderDriver implements Job2dDriver {
+public class CommandsRecorderDriver implements VisitableDriver {
 	private final List<DriverCommand> commands = new ArrayList<>();
 
 	@Override
@@ -32,5 +32,9 @@ public class CommandsRecorderDriver implements Job2dDriver {
 
 	public void clear() {
 		commands.clear();
+	}
+
+	public void accept(VisitorDriver visitor){
+		visitor.visitCommandsRecorderDriver(this);
 	}
 }
