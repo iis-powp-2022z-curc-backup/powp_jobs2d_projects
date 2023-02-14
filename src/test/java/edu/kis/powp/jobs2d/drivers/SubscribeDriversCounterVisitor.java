@@ -7,17 +7,15 @@ import java.util.logging.Logger;
 
 public class SubscribeDriversCounterVisitor implements Subscriber {
 	private VisitableDriver visitableDriver;
-	private DriverManager manager;
 	private Logger logger = Logger.getLogger("global");
 	private DriverCounterVisitor driverCounterVisitor;
-	public SubscribeDriversCounterVisitor(DriverCounterVisitor driverCounterVisitor, DriverManager driverManager, VisitableDriver visitableDriver) {
+	public SubscribeDriversCounterVisitor(DriverCounterVisitor driverCounterVisitor, VisitableDriver visitableDriver) {
 		this.driverCounterVisitor = driverCounterVisitor;
-		this.manager = driverManager;
 		this.visitableDriver = visitableDriver;
 	}
 
 	public void update() {
-		visitableDriver = manager.getCurrentDriver();
+
 		visitableDriver.accept(driverCounterVisitor);
 
 		this.logger.info("driver composite wywołano " + driverCounterVisitor.getDriverComposite()  + " razy");
