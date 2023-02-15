@@ -1,16 +1,18 @@
 package edu.kis.powp.jobs2d.drivers.composite;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.VisitableDriver;
+import edu.kis.powp.jobs2d.drivers.VisitorDriver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class DriverComposite implements Job2dDriver{
-	private List<Job2dDriver> DriverLists = new ArrayList<Job2dDriver>();
+public class DriverComposite implements VisitableDriver {
+	private List<VisitableDriver> DriverLists = new ArrayList<VisitableDriver>();
 
 
-	public void add(Job2dDriver driver){
+	public void add(VisitableDriver driver){
 		this.DriverLists.add(driver);
 	}
 
@@ -37,5 +39,15 @@ public class DriverComposite implements Job2dDriver{
 	@Override
 	public String toString() {
 		return DriverLists.toString();
+	}
+
+	public void accept(VisitorDriver visitor){
+		visitor.visitDriverComposite(this);
+
+
+	}
+
+	public List<VisitableDriver> getDriverList(){
+		return DriverLists;
 	}
 }

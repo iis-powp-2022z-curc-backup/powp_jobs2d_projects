@@ -20,15 +20,15 @@ public class RecordingManager {
 		if (isAlreadyReplaced()) return;
 
 		status = RECORDING_STATUS.IN_PROGRESS;
-		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+		VisitableDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
 		if (currentDriver instanceof DriverComposite) {
-			((DriverComposite) currentDriver).add(recorderDriver);
+			((DriverComposite) currentDriver).add((VisitableDriver) recorderDriver);
 		} else {
 			replacedDriver = currentDriver;
 			DriverComposite driverComposite = new DriverComposite();
 			driverComposite.add(currentDriver);
-			driverComposite.add(recorderDriver);
+			driverComposite.add((VisitableDriver) recorderDriver);
 			DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
 		}
 
@@ -39,15 +39,15 @@ public class RecordingManager {
 		if (isAlreadyReplaced()) return;
 
 		status = RECORDING_STATUS.IN_PROGRESS;
-		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+		VisitableDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
 		if (currentDriver instanceof DriverComposite) {
-			((DriverComposite) currentDriver).add(recorderDriver);
+			((DriverComposite) currentDriver).add((VisitableDriver) recorderDriver);
 		} else {
 			replacedDriver = currentDriver;
 			DriverComposite driverComposite = new DriverComposite();
 			driverComposite.add(currentDriver);
-			driverComposite.add(recorderDriver);
+			driverComposite.add((VisitableDriver) recorderDriver);
 			DriverFeature.getDriverManager().setCurrentDriver(driverComposite);
 		}
 
@@ -56,12 +56,12 @@ public class RecordingManager {
 
 	public void stopRecording() {
 		status = RECORDING_STATUS.STOPPED;
-		Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+		VisitableDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
 		if (currentDriver instanceof DriverComposite) {
 			((DriverComposite) currentDriver).remove(recorderDriver);
 		} else {
-			DriverFeature.getDriverManager().setCurrentDriver(replacedDriver);
+			DriverFeature.getDriverManager().setCurrentDriver((VisitableDriver) replacedDriver);
 		}
 
 		DriverFeature.updateDriverInfo();

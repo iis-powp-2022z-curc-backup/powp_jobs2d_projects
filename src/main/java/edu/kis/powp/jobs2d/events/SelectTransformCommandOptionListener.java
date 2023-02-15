@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.events;
 import edu.kis.powp.jobs2d.command.transformers.ComplexTransformerCommand;
 import edu.kis.powp.jobs2d.command.transformers.TransformerCommand;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.drivers.VisitableDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.TransformerDriver;
 
 import java.awt.event.ActionEvent;
@@ -23,6 +24,6 @@ public class SelectTransformCommandOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        driverManager.setCurrentDriver(new TransformerDriver(driverManager.getCurrentDriver(), transformerCommands, name));
+        driverManager.setCurrentDriver((VisitableDriver) new TransformerDriver(driverManager.getCurrentDriver(), transformerCommands, name));
     }
 }

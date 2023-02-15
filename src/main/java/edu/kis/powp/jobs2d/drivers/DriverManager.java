@@ -13,14 +13,14 @@ import edu.kis.powp.observer.Publisher;
  */
 public class DriverManager {
 
-	private Job2dDriver currentDriver = new LoggerDriver();
+	private VisitableDriver currentDriver = new LoggerDriverDecorator();
 	private final Publisher changePublisher = new Publisher();
 	private final DriverComposite featureDrivers = new DriverComposite();
 
 	/**
 	 * @param driver Set the driver as current.
 	 */
-	public synchronized void setCurrentDriver(Job2dDriver driver) {
+	public synchronized void setCurrentDriver(VisitableDriver driver) {
 		currentDriver = driver;
 		changePublisher.notifyObservers();
 	}
@@ -28,7 +28,7 @@ public class DriverManager {
 	/**
 	 * @return Current driver.
 	 */
-	public synchronized Job2dDriver getCurrentDriver() {
+	public synchronized DriverComposite getCurrentDriver() {
 		final DriverComposite driverComposite = new DriverComposite();
 		driverComposite.add(currentDriver);
 		driverComposite.add(featureDrivers);
@@ -36,7 +36,7 @@ public class DriverManager {
 	}
 
 	public synchronized void addFeatureDriver(Job2dDriver driver) {
-		featureDrivers.add(driver);
+		featureDrivers.add((VisitableDriver) driver);
 	}
 
 	public synchronized void removeFeatureDriver(Job2dDriver driver) {
@@ -48,7 +48,7 @@ public class DriverManager {
 	}
 
 	public Job2dDriver transformCurrentDriver(ComplexTransformerCommand transformerCommands, String name) {
-		currentDriver = new TransformerDriver(currentDriver, transformerCommands, name);
+		currentDriver = (VisitableDriver) new TransformerDriver(currentDriver, transformerCommands, name);
 		return currentDriver;
 	}
 }

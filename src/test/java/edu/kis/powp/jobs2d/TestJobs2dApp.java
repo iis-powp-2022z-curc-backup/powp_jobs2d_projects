@@ -13,6 +13,7 @@ import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
 import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
 import edu.kis.powp.jobs2d.features.MainFeature;
+import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -111,11 +112,11 @@ public class TestJobs2dApp {
 		DriverInfoUpdateObserver driverObserver = new DriverInfoUpdateObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
-		Job2dDriver loggerDriver = new LoggerDriver();
+		VisitableDriver loggerDriver = new LoggerDriverDecorator();
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
-		Job2dDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-		Job2dDriver driver2 = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		VisitableDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+		VisitableDriver driver2 = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Line Simulator", driver1);
 		DriverFeature.getDriverManager().setCurrentDriver(driver1);
 
@@ -132,8 +133,15 @@ public class TestJobs2dApp {
 		DriverFeature.addDriver("Logger and line driver combo",compositeLoggerSpecialLineComboDriver);
 		DriverFeature.addDriver("Double line driver combo",compositeDoubleLineComboDriver);
 
-		Job2dDriver driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-		DriverFeature.addDriver("Special line Simulator", driver);
+		DriverManager manager = DriverFeature.getDriverManager();
+		Publisher publisher = manager.getChangePublisher();
+		DriverCounterVisitor driverCounterVisitor = new DriverCounterVisitor();
+
+		VisitableDriver visitableDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "test1");
+		publisher.addSubscriber(new SubscribeDriversCounterVisitor(driverCounterVisitor,manager, visitableDriver));
+
+//		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+//		DriverFeature.addDriver("Special line Simulator", driver);
 
 	}
 
