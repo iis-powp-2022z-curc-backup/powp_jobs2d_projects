@@ -13,4 +13,9 @@ public class ScaleCommand implements TransformerCommand {
     public TransformedCoords execute(TransformedCoords coords) {
         return coords.scale(scaleX, scaleY);
     }
+
+    @Override
+    public void accept(TransformerVisitor visitor) {
+        visitor.visitScaleCommand(this);
+    }
 }
