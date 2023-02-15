@@ -112,11 +112,11 @@ public class TestJobs2dApp {
 		DriverInfoUpdateObserver driverObserver = new DriverInfoUpdateObserver();
 		DriverFeature.getDriverManager().getChangePublisher().addSubscriber(driverObserver);
 
-		Job2dDriver loggerDriver = new LoggerDriver();
+		VisitableDriver loggerDriver = new LoggerDriverDecorator();
 
 		DrawPanelController drawerController = DrawerFeature.getDrawerController();
-		Job2dDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-		Job2dDriver driver2 = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
+		VisitableDriver driver1 = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+		VisitableDriver driver2 = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 		DriverFeature.addDriver("Line Simulator", driver1);
 		DriverFeature.getDriverManager().setCurrentDriver(driver1);
 
@@ -138,7 +138,7 @@ public class TestJobs2dApp {
 		DriverCounterVisitor driverCounterVisitor = new DriverCounterVisitor();
 
 		VisitableDriver visitableDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "test1");
-		publisher.addSubscriber(new SubscribeDriversCounterVisitor(driverCounterVisitor, visitableDriver));
+		publisher.addSubscriber(new SubscribeDriversCounterVisitor(driverCounterVisitor,manager, visitableDriver));
 
 //		driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 //		DriverFeature.addDriver("Special line Simulator", driver);
