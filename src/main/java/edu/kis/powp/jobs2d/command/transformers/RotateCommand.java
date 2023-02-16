@@ -12,8 +12,4 @@ public class RotateCommand implements TransformerCommand {
         return coords.rotate(angle);
     }
 
-    @Override
-    public void accept(TransformerVisitor visitor) {
-        visitor.visitRotateCommand(this);
-    }
 }

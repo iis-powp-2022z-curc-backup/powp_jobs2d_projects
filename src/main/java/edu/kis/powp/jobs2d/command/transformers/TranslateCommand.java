@@ -14,8 +14,4 @@ public class TranslateCommand implements TransformerCommand {
         return coords.translate(x, y);
     }
 
-    @Override
-    public void accept(TransformerVisitor visitor) {
-        visitor.visitTranslateCommand(this);
-    }
 }
