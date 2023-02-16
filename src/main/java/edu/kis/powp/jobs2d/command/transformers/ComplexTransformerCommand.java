@@ -13,19 +13,12 @@ public class ComplexTransformerCommand implements TransformerCommand {
     @Override
     public TransformedCoords execute(TransformedCoords coords) {
         TransformedCoords transformedCoords = coords;
-        ComplexTransformerVisitor visitor = new ComplexTransformerVisitor();
+
         for (TransformerCommand command : transformerCommands){
             transformedCoords = command.execute(transformedCoords);
-            command.accept(visitor);
         }
-
-        this.logger.info("Rotacje wykonano " + visitor.getCounterRotateCommand()  + " razy");
-        this.logger.info("Przeniesienie wykonano " + visitor.getCounterTranslateCommand()  + " razy");
-        this.logger.info("Skalowanie " + visitor.getCounterScaleCommand()  + " razy");
 
         return transformedCoords;
     }
 
-    @Override
-    public void accept(TransformerVisitor visitor) {}
 }
