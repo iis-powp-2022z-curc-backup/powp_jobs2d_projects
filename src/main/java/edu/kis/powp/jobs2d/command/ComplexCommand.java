@@ -55,6 +55,16 @@ public class ComplexCommand implements ICompoundCommand {
 
 	}
 
+	@Override
+	public int getPosX() {
+		return 0;
+	}
+
+	@Override
+	public int getPosY() {
+		return 0;
+	}
+
 	public static class ComplexCommandBuilder {
 		private final List<DriverCommand> commands = new LinkedList<>();
 		private String name;

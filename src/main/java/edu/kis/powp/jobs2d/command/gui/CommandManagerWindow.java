@@ -178,11 +178,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		setTransformationCommand(flipStrategy);
 	}
 
-	private void perspectiveTransformationCommand(){
-//		PerspectiveTransformStrategy perspectiveTransformStrategy = new PerspectiveTransformStrategy();
-//		setTransformationCommand(perspectiveTransformStrategy);
-	}
-
 	private void setTransformationCommand(TransformStrategyInterface strategy) {
 		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 
@@ -193,6 +188,36 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		while(iterator.hasNext()) {
 			iterator.next().accept(translateCommandVisitor);
 
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+	}
+
+	private void perspectiveTransformationCommand(){
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+
+		while(iterator.hasNext()) {
+			DriverCommand item = iterator.next();
+			if(item.getPosY() < minY)
+				minY = item.getPosY();
+
+			if(item.getPosY() > maxY)
+				maxY = item.getPosY();
+		}
+
+
+		TrapezeTransitionStrategy trapezeTransitionStrategy = new TrapezeTransitionStrategy(minY, maxY);
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
+
+		iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
 		}
 
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
