@@ -20,6 +20,7 @@ import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.command.transformers.TransformerCommand;
 import edu.kis.powp.jobs2d.command.transformers.TranslateCommand;
 import edu.kis.powp.jobs2d.command.transformers.TranslateStrategy;
+import edu.kis.powp.jobs2d.command.transformers.TrapezeTransitionStrategy;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
@@ -200,9 +201,33 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	}
 
 	private void perspectiveTransformationCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf(" transformation command to %s %n", commandName);
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+
+		while(iterator.hasNext()) {
+			DriverCommand item = iterator.next();
+			if(item.getPosY() < minY)
+				minY = item.getPosY();
+
+			if(item.getPosY() > maxY)
+				maxY = item.getPosY();
+		}
+
+
+		TrapezeTransitionStrategy trapezeTransitionStrategy = new TrapezeTransitionStrategy(minY, maxY);
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
+
+		iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
 
 	public void deleteObservers(JButton resetButton) {
