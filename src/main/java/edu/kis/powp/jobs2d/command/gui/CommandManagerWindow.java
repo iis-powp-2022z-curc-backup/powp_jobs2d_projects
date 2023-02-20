@@ -178,6 +178,21 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		setTransformationCommand(flipStrategy);
 	}
 
+	private void setTransformationCommand(TransformStrategyInterface strategy) {
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(strategy);
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
+
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+	}
+
 	private void perspectiveTransformationCommand(){
 		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 
