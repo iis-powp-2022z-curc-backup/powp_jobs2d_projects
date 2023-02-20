@@ -17,4 +17,6 @@ public interface DriverCommand extends Cloneable {
 
 	public void accept(DriverCommandVisitor driverCommandVisitor);
 
+	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor);
+
 }

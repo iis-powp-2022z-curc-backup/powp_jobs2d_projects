@@ -28,8 +28,14 @@ public class OperateToCommand implements DriverCommand {
 			return new OperateToCommand(this.posX, this.posY);
 		}
 	}
+
+
 	public void accept(DriverCommandVisitor driverCommandVisitor){
 		driverCommandVisitor.visitOperateToCommand(this);
+	}
+
+	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor){
+		transformerCommandVisitor.run(this);
 	}
 
 	public int getPosX(){

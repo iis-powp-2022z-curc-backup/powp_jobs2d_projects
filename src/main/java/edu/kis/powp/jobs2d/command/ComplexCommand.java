@@ -50,6 +50,11 @@ public class ComplexCommand implements ICompoundCommand {
 		return new ComplexCommand(commandsListToClone, this.name);
 	}
 
+	@Override
+	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor) {
+
+	}
+
 	public static class ComplexCommandBuilder {
 		private final List<DriverCommand> commands = new LinkedList<>();
 		private String name;
