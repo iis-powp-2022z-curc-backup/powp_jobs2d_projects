@@ -95,17 +95,11 @@ public class TestJobs2dApp {
 				DriverFeature.getDriverManager(), ReflectionCommand, "Flip"
 		));
 
-		TransformerCommand TrapezeTransitionCommand = new TrapezeTransitionCommand(0.5, 2);
-		application.addTest("TrapezeTransition", new SelectTransformCommandOptionListener(
-				DriverFeature.getDriverManager(), TrapezeTransitionCommand, "TrapezeTransition"
-		));
-
 		List<TransformerCommand> complexTransformerCommands = new ArrayList<>();
 		complexTransformerCommands.add(new TranslateCommand(50, 50));
 		complexTransformerCommands.add(new ScaleCommand(0.5, 0.5));
 		complexTransformerCommands.add(new RotateCommand(180));
 		complexTransformerCommands.add(new ReflectionCommand());
-		complexTransformerCommands.add(new TrapezeTransitionCommand(0.5, 2));
 		ComplexTransformerCommand complexTransformerCommand =
 				new ComplexTransformerCommand(complexTransformerCommands);
 		application.addTest("Complex transform",
