@@ -17,9 +17,7 @@ import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.TransformerCommandVisitor;
 import edu.kis.powp.jobs2d.command.TransformerCommandVisitorInterface;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
-import edu.kis.powp.jobs2d.command.transformers.TransformerCommand;
-import edu.kis.powp.jobs2d.command.transformers.TranslateCommand;
-import edu.kis.powp.jobs2d.command.transformers.TranslateStrategy;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
@@ -176,27 +174,60 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 					iterator.next().accept(translateCommandVisitor);
 
 				}
-				
+
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 
 	}
 
 	private void scaleCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("scale command to %s %n", commandName);
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		ScaleStrategy scaleStrategy = new ScaleStrategy(2, 2);
+
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(scaleStrategy);
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
+
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
 
 	private void rotateCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("rotate command to %s %n", commandName);
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		RotateStrategy rotateStrategy = new RotateStrategy(2, 2, 270);
+
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(rotateStrategy);
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
+
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
 
 	private void flipCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("flip command to %s %n", commandName);
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		FlipStrategy flipStrategy = new FlipStrategy();
+
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(flipStrategy);
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		while(iterator.hasNext()) {
+			iterator.next().accept(translateCommandVisitor);
+
+		}
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
 
 	private void perspectiveTransformationCommand(){
