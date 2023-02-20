@@ -43,8 +43,9 @@ public class TransformedCoords {
         return this;
     }
 
-    public TransformedCoords transumeByTrapeze() {
-        
+    public TransformedCoords transumeByTrapeze(double transumeX, double transumeY) {
+        x = (int) (x * transumeX);
+        y = (int) (y * transumeY);
 
         return this;
     }

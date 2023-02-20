@@ -66,6 +66,30 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 3;
 		content.add(currentCommandPreview, c);
 
+		JButton btnTranslate = new JButton("Translate");
+		btnTranslate.addActionListener((ActionEvent e) -> this.translateCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnTranslate, c);
+
+		JButton scaleFlip = new JButton("Scale");
+		scaleFlip.addActionListener((ActionEvent e) -> this.scaleCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(scaleFlip, c);
+
+		JButton rotateFlip = new JButton("Rotate");
+		rotateFlip.addActionListener((ActionEvent e) -> this.rotateCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(rotateFlip, c);
+
 		JButton btnFlip = new JButton("Flip");
 		btnFlip.addActionListener((ActionEvent e) -> this.flipCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -74,13 +98,13 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 1;
 		content.add(btnFlip, c);
 
-		JButton btnTransformation = new JButton("Transformation");
-		btnTransformation.addActionListener((ActionEvent e) -> this.transformationCommand());
+		JButton btnPerspectiveTransformation = new JButton("Perspective Transformation");
+		btnPerspectiveTransformation.addActionListener((ActionEvent e) -> this.perspectiveTransformationCommand());
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.weighty = 1;
-		content.add(btnTransformation, c);
+		content.add(btnPerspectiveTransformation, c);
 
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -125,11 +149,23 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		currentCommandField.setText(commandManager.getCurrentCommandString());
 	}
 
+	private void translateCommand(){
+
+	}
+
+	private void scaleCommand(){
+
+	}
+
+	private void rotateCommand(){
+
+	}
+
 	private void flipCommand(){
 
 	}
 
-	private void transformationCommand(){
+	private void perspectiveTransformationCommand(){
 		
 	}
 
