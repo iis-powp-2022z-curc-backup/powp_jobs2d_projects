@@ -12,10 +12,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.ComplexCommand;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.TransformerCommandVisitor;
-import edu.kis.powp.jobs2d.command.TransformerCommandVisitorInterface;
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -162,63 +159,34 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	}
 
 	private void translateCommand(){
-		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-
 		TranslateStrategy translateStrategy = new TranslateStrategy(5, 5);
-
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(translateStrategy);
-
-		Iterator<DriverCommand> iterator = currentCommand.iterator();
-
-				while(iterator.hasNext()) {
-					iterator.next().accept(translateCommandVisitor);
-
-				}
-
-		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
-
+		setTransformationCommand(translateStrategy);
 	}
 
 	private void scaleCommand(){
-		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-
 		ScaleStrategy scaleStrategy = new ScaleStrategy(2, 2);
-
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(scaleStrategy);
-
-		Iterator<DriverCommand> iterator = currentCommand.iterator();
-
-		while(iterator.hasNext()) {
-			iterator.next().accept(translateCommandVisitor);
-
-		}
-
-		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+		setTransformationCommand(scaleStrategy);
 	}
 
 	private void rotateCommand(){
-		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-
 		RotateStrategy rotateStrategy = new RotateStrategy(2, 2, 270);
-
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(rotateStrategy);
-
-		Iterator<DriverCommand> iterator = currentCommand.iterator();
-
-		while(iterator.hasNext()) {
-			iterator.next().accept(translateCommandVisitor);
-
-		}
-
-		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+		setTransformationCommand(rotateStrategy);
 	}
 
 	private void flipCommand(){
+		FlipStrategy flipStrategy = new FlipStrategy();
+		setTransformationCommand(flipStrategy);
+	}
+
+	private void perspectiveTransformationCommand(){
+//		PerspectiveTransformStrategy perspectiveTransformStrategy = new PerspectiveTransformStrategy();
+//		setTransformationCommand(perspectiveTransformStrategy);
+	}
+
+	private void setTransformationCommand(TransformStrategyInterface strategy) {
 		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 
-		FlipStrategy flipStrategy = new FlipStrategy();
-
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(flipStrategy);
+		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(strategy);
 
 		Iterator<DriverCommand> iterator = currentCommand.iterator();
 
@@ -228,12 +196,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		}
 
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
-	}
-
-	private void perspectiveTransformationCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf(" transformation command to %s %n", commandName);
 	}
 
 	public void deleteObservers(JButton resetButton) {
