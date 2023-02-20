@@ -66,6 +66,22 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 3;
 		content.add(currentCommandPreview, c);
 
+		JButton btnFlip = new JButton("Flip");
+		btnFlip.addActionListener((ActionEvent e) -> this.flipCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnFlip, c);
+
+		JButton btnTransformation = new JButton("Transformation");
+		btnTransformation.addActionListener((ActionEvent e) -> this.transformationCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnTransformation, c);
+
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -109,6 +125,13 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		currentCommandField.setText(commandManager.getCurrentCommandString());
 	}
 
+	private void flipCommand(){
+
+	}
+
+	private void transformationCommand(){
+		
+	}
 
 	public void deleteObservers(JButton resetButton) {
 		if (observersDeleted) {
