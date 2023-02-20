@@ -10,14 +10,14 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.*;
-import edu.kis.powp.jobs2d.commands.SubscribeCommandBoundariesCheckVisitor;
-import edu.kis.powp.jobs2d.command.CommandsCounterVisitor;
+import edu.kis.powp.jobs2d.events.commands.SubscribeCommandBoundariesCheckVisitor;
+import edu.kis.powp.jobs2d.command.CommandsCounterDriverCommandVisitor;
 import edu.kis.powp.jobs2d.features.MainFeature;
 import edu.kis.powp.jobs2d.features.RecordingFeature;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
-import edu.kis.powp.jobs2d.commands.SubscribeCommandsCounterVisitor;
+import edu.kis.powp.jobs2d.events.commands.SubscribeCommandsCounterVisitor;
 import edu.kis.powp.jobs2d.command.manager.DriverInfoUpdateObserver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.command.transformers.*;
@@ -61,12 +61,12 @@ public class TestJobs2dApp {
 
 		Publisher publisher = manager.getChangePublisher();
 
-		CommandsCounterVisitor commandsCounterVisitor = new CommandsCounterVisitor();
+		CommandsCounterDriverCommandVisitor commandsCounterVisitor = new CommandsCounterDriverCommandVisitor();
 		publisher.addSubscriber(new SubscribeCommandsCounterVisitor(commandsCounterVisitor, manager));
 
 		IRectangularCanvas canvas = new JPanelCanvasAdapter(application.getFreePanel());
 		ICanvasBoundariesCheckStrategy strategy = new RectangularCanvasBoundariesCheckStrategy(canvas);
-		CommandBoundariesCheckVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckVisitor(strategy);
+		CommandBoundariesCheckDriverCommandVisitor commandBoundariesCheckVisitor = new CommandBoundariesCheckDriverCommandVisitor(strategy);
 		publisher.addSubscriber(new SubscribeCommandBoundariesCheckVisitor(commandBoundariesCheckVisitor, manager));
 
 		application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());

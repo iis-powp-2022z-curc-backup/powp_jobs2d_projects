@@ -23,8 +23,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	private final JTextArea currentCommandField;
 	private final JPanel currentCommandPreview;
-
 	private String observerListString;
+
 	private final JTextArea observerListField;
 
 	private Job2dDriver previewAdapter;
@@ -89,13 +89,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(btnRunCommand, c);
+
+		DrawPanelController drawPanelController = new DrawPanelController();
+		drawPanelController.initialize(currentCommandPreview);
+		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
 	}
 
 	private void runCommand() {
 		commandManager.runCommand();
-		DrawPanelController drawPanelController = new DrawPanelController();
-		drawPanelController.initialize(currentCommandPreview);
-		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
 	}
 
 	private void clearCommand() {
