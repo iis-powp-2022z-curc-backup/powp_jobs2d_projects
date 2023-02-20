@@ -36,4 +36,16 @@ public class TransformedCoords {
         y = (int) (x * sin + y * cos);
         return this;
     }
+
+    public TransformedCoords flip() {
+        x =  -x;
+
+        return this;
+    }
+
+    public TransformedCoords transumeByTrapeze() {
+        
+
+        return this;
+    }
 }

@@ -90,10 +90,16 @@ public class TestJobs2dApp {
 				new SelectTransformCommandOptionListener(
 						DriverFeature.getDriverManager(), RotateCommand, "Rotate"));
 
+		TransformerCommand ReflectionCommand = new ReflectionCommand();
+		application.addTest("Flip", new SelectTransformCommandOptionListener(
+				DriverFeature.getDriverManager(), ReflectionCommand, "Flip"
+		));
+
 		List<TransformerCommand> complexTransformerCommands = new ArrayList<>();
 		complexTransformerCommands.add(new TranslateCommand(50, 50));
 		complexTransformerCommands.add(new ScaleCommand(0.5, 0.5));
 		complexTransformerCommands.add(new RotateCommand(180));
+		complexTransformerCommands.add(new ReflectionCommand());
 		ComplexTransformerCommand complexTransformerCommand =
 				new ComplexTransformerCommand(complexTransformerCommands);
 		application.addTest("Complex transform",
