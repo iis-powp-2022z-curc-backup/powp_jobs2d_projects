@@ -12,15 +12,9 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.ComplexCommand;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.TransformerCommandVisitor;
-import edu.kis.powp.jobs2d.command.TransformerCommandVisitorInterface;
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
-import edu.kis.powp.jobs2d.command.transformers.TransformerCommand;
-import edu.kis.powp.jobs2d.command.transformers.TranslateCommand;
-import edu.kis.powp.jobs2d.command.transformers.TranslateStrategy;
-import edu.kis.powp.jobs2d.command.transformers.TrapezeTransitionStrategy;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
@@ -165,39 +159,23 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	}
 
 	private void translateCommand(){
-		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-
 		TranslateStrategy translateStrategy = new TranslateStrategy(5, 5);
-
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(translateStrategy);
-
-		Iterator<DriverCommand> iterator = currentCommand.iterator();
-
-				while(iterator.hasNext()) {
-					iterator.next().accept(translateCommandVisitor);
-
-				}
-				
-		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
-
+		setTransformationCommand(translateStrategy);
 	}
 
 	private void scaleCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("scale command to %s %n", commandName);
+		ScaleStrategy scaleStrategy = new ScaleStrategy(2, 2);
+		setTransformationCommand(scaleStrategy);
 	}
 
 	private void rotateCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("rotate command to %s %n", commandName);
+		RotateStrategy rotateStrategy = new RotateStrategy(2, 2, 270);
+		setTransformationCommand(rotateStrategy);
 	}
 
 	private void flipCommand(){
-		DriverCommand driverCommand = commandManager.getCurrentCommand();
-//		String commandName = commandManager.getCurrentCommand().toString();
-//		System.out.printf("flip command to %s %n", commandName);
+		FlipStrategy flipStrategy = new FlipStrategy();
+		setTransformationCommand(flipStrategy);
 	}
 
 	private void perspectiveTransformationCommand(){
