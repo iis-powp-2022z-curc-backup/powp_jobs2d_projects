@@ -207,11 +207,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		TrapezeTransitionStrategy trapezeTransitionStrategy = new TrapezeTransitionStrategy(minY, maxY);
 		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
 
-		iterator = currentCommand.iterator();
-
-		while(iterator.hasNext()) {
-			iterator.next().accept(translateCommandVisitor);
-		}
+		translateCommandVisitor.visitICompoundCommand(currentCommand);
 
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
