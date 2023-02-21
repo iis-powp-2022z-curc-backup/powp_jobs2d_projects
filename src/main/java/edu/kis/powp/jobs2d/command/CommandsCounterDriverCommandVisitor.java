@@ -3,7 +3,7 @@ package edu.kis.powp.jobs2d.command;
 
 import java.util.Iterator;
 
-public class CommandsCounterVisitor implements Visitor {
+public class CommandsCounterDriverCommandVisitor implements DriverCommandVisitor {
 	private int counterOperateToCommand = 0;
 	private int counterSetPositionCommand = 0;
 

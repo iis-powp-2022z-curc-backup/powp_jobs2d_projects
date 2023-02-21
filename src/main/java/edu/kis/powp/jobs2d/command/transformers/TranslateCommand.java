@@ -13,4 +13,5 @@ public class TranslateCommand implements TransformerCommand {
     public TransformedCoords execute(TransformedCoords coords) {
         return coords.translate(x, y);
     }
+
 }

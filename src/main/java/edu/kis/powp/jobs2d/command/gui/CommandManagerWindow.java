@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.*;
@@ -11,8 +12,11 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
+import edu.kis.powp.jobs2d.command.transformers.*;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -23,8 +27,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	private final JTextArea currentCommandField;
 	private final JPanel currentCommandPreview;
-
 	private String observerListString;
+
 	private final JTextArea observerListField;
 
 	private Job2dDriver previewAdapter;
@@ -66,6 +70,46 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.weighty = 3;
 		content.add(currentCommandPreview, c);
 
+		JButton btnTranslate = new JButton("Translate");
+		btnTranslate.addActionListener((ActionEvent e) -> this.translateCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnTranslate, c);
+
+		JButton scaleFlip = new JButton("Scale");
+		scaleFlip.addActionListener((ActionEvent e) -> this.scaleCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(scaleFlip, c);
+
+		JButton rotateFlip = new JButton("Rotate");
+		rotateFlip.addActionListener((ActionEvent e) -> this.rotateCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(rotateFlip, c);
+
+		JButton btnFlip = new JButton("Flip");
+		btnFlip.addActionListener((ActionEvent e) -> this.flipCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnFlip, c);
+
+		JButton btnPerspectiveTransformation = new JButton("Perspective Transformation");
+		btnPerspectiveTransformation.addActionListener((ActionEvent e) -> this.perspectiveTransformationCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.weighty = 1;
+		content.add(btnPerspectiveTransformation, c);
+
 		JButton btnClearCommand = new JButton("Clear command");
 		btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
 		c.fill = GridBagConstraints.BOTH;
@@ -89,13 +133,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 		c.weighty = 1;
 		content.add(btnRunCommand, c);
-	}
 
-	private void runCommand() {
-		commandManager.runCommand();
 		DrawPanelController drawPanelController = new DrawPanelController();
 		drawPanelController.initialize(currentCommandPreview);
 		previewAdapter = new LineDriverAdapter(drawPanelController , LineFactory.getBasicLine(), "Preview");
+	}
+
+	private void runCommand() {
+
+
+		commandManager.runCommand();
+
+		DriverCommandManager manager = CommandsFeature.getDriverCommandManager();
+		manager.setCurrentCommand(commandManager.getCurrentCommand());
 	}
 
 	private void clearCommand() {
@@ -108,6 +158,59 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 		currentCommandField.setText(commandManager.getCurrentCommandString());
 	}
 
+	private void translateCommand(){
+		TranslateStrategy translateStrategy = new TranslateStrategy(5, 5);
+		setTransformationCommand(translateStrategy);
+	}
+
+	private void scaleCommand(){
+		ScaleStrategy scaleStrategy = new ScaleStrategy(2, 2);
+		setTransformationCommand(scaleStrategy);
+	}
+
+	private void rotateCommand(){
+		RotateStrategy rotateStrategy = new RotateStrategy(2, 2, 270);
+		setTransformationCommand(rotateStrategy);
+	}
+
+	private void flipCommand(){
+		FlipStrategy flipStrategy = new FlipStrategy();
+		setTransformationCommand(flipStrategy);
+	}
+
+	private void setTransformationCommand(TransformStrategyInterface strategy) {
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(strategy);
+		translateCommandVisitor.visitICompoundCommand(currentCommand);
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+	}
+
+	private void perspectiveTransformationCommand(){
+		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+
+		Iterator<DriverCommand> iterator = currentCommand.iterator();
+
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+
+		while(iterator.hasNext()) {
+			DriverCommand item = iterator.next();
+			if(item.getPosY() < minY)
+				minY = item.getPosY();
+
+			if(item.getPosY() > maxY)
+				maxY = item.getPosY();
+		}
+
+
+		TrapezeTransitionStrategy trapezeTransitionStrategy = new TrapezeTransitionStrategy(minY, maxY);
+		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
+
+		translateCommandVisitor.visitICompoundCommand(currentCommand);
+
+		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
+	}
 
 	public void deleteObservers(JButton resetButton) {
 		if (observersDeleted) {

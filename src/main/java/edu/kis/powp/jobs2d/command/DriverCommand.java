@@ -15,6 +15,9 @@ public interface DriverCommand extends Cloneable {
 	public void execute(Job2dDriver driver);
 	public Object clone();
 
-	public void accept(Visitor visitor);
+	public void accept(DriverCommandVisitor driverCommandVisitor);
+
+	public int getPosX();
+	public int getPosY();
 
 }

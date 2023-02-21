@@ -28,8 +28,8 @@ public class SetPositionCommand implements DriverCommand {
 			return new SetPositionCommand(this.posX, this.posY);
 		}
 	}
-	public void accept(Visitor visitor){
-		visitor.visitSetPositionCommand(this);
+	public void accept(DriverCommandVisitor driverCommandVisitor){
+		driverCommandVisitor.visitSetPositionCommand(this);
 	}
 
 	public int getPosX() {

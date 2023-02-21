@@ -11,4 +11,5 @@ public class RotateCommand implements TransformerCommand {
     public TransformedCoords execute(TransformedCoords coords) {
         return coords.rotate(angle);
     }
+
 }

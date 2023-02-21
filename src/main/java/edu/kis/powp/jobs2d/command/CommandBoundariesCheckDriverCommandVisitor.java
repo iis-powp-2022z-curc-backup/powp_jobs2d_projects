@@ -2,12 +2,12 @@ package edu.kis.powp.jobs2d.command;
 
 import java.util.Iterator;
 
-public class CommandBoundariesCheckVisitor implements Visitor{
+public class CommandBoundariesCheckDriverCommandVisitor implements DriverCommandVisitor {
 
 	private boolean isExceedingBoundaries = false;
 	private final ICanvasBoundariesCheckStrategy strategy;
 
-	public CommandBoundariesCheckVisitor(ICanvasBoundariesCheckStrategy strategy) {
+	public CommandBoundariesCheckDriverCommandVisitor(ICanvasBoundariesCheckStrategy strategy) {
 		this.strategy = strategy;
 	}
 

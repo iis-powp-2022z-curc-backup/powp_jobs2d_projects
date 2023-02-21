@@ -1,6 +1,6 @@
-package edu.kis.powp.jobs2d.commands;
+package edu.kis.powp.jobs2d.events.commands;
 
-import edu.kis.powp.jobs2d.command.CommandBoundariesCheckVisitor;
+import edu.kis.powp.jobs2d.command.CommandBoundariesCheckDriverCommandVisitor;
 import edu.kis.powp.jobs2d.command.manager.DriverCommandManager;
 import edu.kis.powp.observer.Subscriber;
 
@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 public class SubscribeCommandBoundariesCheckVisitor implements Subscriber {
 	private final DriverCommandManager manager;
 	private final Logger logger = Logger.getLogger("global");
-	private final CommandBoundariesCheckVisitor commandBoundariesCheckVisitor;
+	private final CommandBoundariesCheckDriverCommandVisitor commandBoundariesCheckVisitor;
 
-	public SubscribeCommandBoundariesCheckVisitor(CommandBoundariesCheckVisitor commandBoundariesCheckVisitor, DriverCommandManager driverManager) {
+	public SubscribeCommandBoundariesCheckVisitor(CommandBoundariesCheckDriverCommandVisitor commandBoundariesCheckVisitor, DriverCommandManager driverManager) {
 		this.commandBoundariesCheckVisitor = commandBoundariesCheckVisitor;
 		this.manager = driverManager;
 	}
