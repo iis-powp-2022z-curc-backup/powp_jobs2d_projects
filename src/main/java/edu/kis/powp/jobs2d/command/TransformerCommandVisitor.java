@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.command;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class TransformerCommandVisitor implements DriverCommandVisitor{
@@ -17,7 +18,14 @@ public class TransformerCommandVisitor implements DriverCommandVisitor{
     }
 
     @Override
-    public void visitICompoundCommand(ICompoundCommand iCompoundCommand) {}
+    public void visitICompoundCommand(ICompoundCommand iCompoundCommand) {
+        Iterator<DriverCommand> iterator = iCompoundCommand.iterator();
+
+        while(iterator.hasNext()) {
+            iterator.next().accept(this);
+        }
+
+    }
 
     @Override
     public void visitOperateToCommand(OperateToCommand operateToCommand) {

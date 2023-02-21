@@ -180,14 +180,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 	private void setTransformationCommand(TransformStrategyInterface strategy) {
 		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-
 		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(strategy);
-
-		Iterator<DriverCommand> iterator = currentCommand.iterator();
-
-		while(iterator.hasNext()) {
-			iterator.next().accept(translateCommandVisitor);
-		}
+		translateCommandVisitor.visitICompoundCommand(currentCommand);
 
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
 	}
