@@ -34,10 +34,6 @@ public class OperateToCommand implements DriverCommand {
 		driverCommandVisitor.visitOperateToCommand(this);
 	}
 
-	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor){
-		transformerCommandVisitor.run(this);
-	}
-
 	public int getPosX(){
 		return this.posX;
 	}

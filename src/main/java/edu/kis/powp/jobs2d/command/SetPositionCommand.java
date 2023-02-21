@@ -32,10 +32,6 @@ public class SetPositionCommand implements DriverCommand {
 		driverCommandVisitor.visitSetPositionCommand(this);
 	}
 
-	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor){
-		transformerCommandVisitor.run(this);
-	}
-
 	public int getPosX() {
 		return posX;
 	}
