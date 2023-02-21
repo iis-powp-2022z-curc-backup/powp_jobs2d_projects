@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.command.transformers;
 
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.command.TransformStrategyInterface;
@@ -18,23 +19,27 @@ import edu.kis.powp.jobs2d.command.TransformStrategyInterface;
         }
 
         public OperateToCommand execute(OperateToCommand operateToCommand) {
-            double cos = Math.cos(Math.toRadians(angle));
-            double sin = Math.sin(Math.toRadians(angle));
+            Integer[] newCoordinates = setNewCoordinates(operateToCommand);
 
-            int finalX = (int) (operateToCommand.getPosX() * cos - operateToCommand.getPosY() * sin);
-            int finalY = (int) (operateToCommand.getPosX() * sin + operateToCommand.getPosY() * cos);
-
-            return new OperateToCommand(finalX, finalY);
+            return new OperateToCommand(newCoordinates[0], newCoordinates[1]);
         }
 
         public SetPositionCommand execute(SetPositionCommand setPositionCommand) {
+            Integer[] newCoordinates = setNewCoordinates(setPositionCommand);
+
+            return new SetPositionCommand(newCoordinates[0], newCoordinates[1]);
+        }
+
+        private Integer[] setNewCoordinates(DriverCommand command) {
+            Integer[] coordinates = new Integer[2];
+
             double cos = Math.cos(Math.toRadians(angle));
             double sin = Math.sin(Math.toRadians(angle));
 
-            int finalX = (int) (setPositionCommand.getPosX() * cos - setPositionCommand.getPosY() * sin);
-            int finalY = (int) (setPositionCommand.getPosX() * sin + setPositionCommand.getPosY() * cos);
+            coordinates[0] = (int) (command.getPosX() * cos - command.getPosY() * sin);
+            coordinates[1] = (int) (command.getPosX() * sin + command.getPosY() * cos);
 
-            return new SetPositionCommand(finalX, finalY);
+            return coordinates;
         }
     }
 
