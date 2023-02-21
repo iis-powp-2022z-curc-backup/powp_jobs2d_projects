@@ -3,7 +3,7 @@ package edu.kis.powp.jobs2d.command;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransformerCommandVisitor implements TransformerCommandVisitorInterface{
+public class TransformerCommandVisitor implements DriverCommandVisitor{
 
     private final List<DriverCommand> driverCommandList = new ArrayList<>();
     private TransformStrategyInterface strategy;
@@ -12,18 +12,20 @@ public class TransformerCommandVisitor implements TransformerCommandVisitorInter
         this.strategy = strategy;
     }
 
-    public void run(OperateToCommand operateToCommand) {
-        driverCommandList.add(strategy.execute(operateToCommand));
-    }
-
-    public void run(SetPositionCommand setPositionCommand) {
-        driverCommandList.add(strategy.execute(setPositionCommand));
-    }
-
     public ComplexCommand createComplexCommand() {
         return new ComplexCommand(driverCommandList, "Transformation command");
     }
 
+    @Override
+    public void visitICompoundCommand(ICompoundCommand iCompoundCommand) {}
 
-    public List<DriverCommand> getDriverCommandList() { return this.driverCommandList; };
+    @Override
+    public void visitOperateToCommand(OperateToCommand operateToCommand) {
+        driverCommandList.add(strategy.execute(operateToCommand));
+    }
+
+    @Override
+    public void visitSetPositionCommand(SetPositionCommand setPositionCommand) {
+        driverCommandList.add(strategy.execute(setPositionCommand));
+    }
 }
