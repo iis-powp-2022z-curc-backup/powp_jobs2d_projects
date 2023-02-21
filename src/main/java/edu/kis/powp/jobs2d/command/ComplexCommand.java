@@ -51,8 +51,8 @@ public class ComplexCommand implements ICompoundCommand {
 	}
 
 	@Override
-	public void accept(TransformerCommandVisitorInterface transformerCommandVisitor) {
-
+	public void accept(DriverCommandVisitor driverCommandVisitor) {
+		driverCommandVisitor.visitICompoundCommand(this);
 	}
 
 	@Override
