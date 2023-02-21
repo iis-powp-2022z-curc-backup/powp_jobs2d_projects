@@ -181,13 +181,12 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 	private void setTransformationCommand(TransformStrategyInterface strategy) {
 		ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(strategy);
+		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(strategy);
 
 		Iterator<DriverCommand> iterator = currentCommand.iterator();
 
 		while(iterator.hasNext()) {
 			iterator.next().accept(translateCommandVisitor);
-
 		}
 
 		commandManager.setCurrentCommand(translateCommandVisitor.createComplexCommand());
@@ -212,7 +211,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 
 		TrapezeTransitionStrategy trapezeTransitionStrategy = new TrapezeTransitionStrategy(minY, maxY);
-		TransformerCommandVisitorInterface translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
+		TransformerCommandVisitor translateCommandVisitor = new TransformerCommandVisitor(trapezeTransitionStrategy);
 
 		iterator = currentCommand.iterator();
 
